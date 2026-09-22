@@ -270,48 +270,159 @@ function removePronunciationButtons() {
 }
 
 
+let japaneseVoice = null;
+
+function loadJapaneseVoice() {
+
+    if (!("speechSynthesis" in window)) {
+        return;
+    }
+
+    const voices = window.speechSynthesis.getVoices();
+
+    japaneseVoice =
+        voices.find(function (voice) {
+            return voice.lang &&
+                voice.lang.toLowerCase().startsWith("ja");
+        }) || null;
+}
+
+
+// Load voices when available
+if ("speechSynthesis" in window) {
+
+    loadJapaneseVoice();
+
+    window.speechSynthesis.addEventListener(
+        "voiceschanged",
+        loadJapaneseVoice
+    );
+
+}
+
+
 function pronounceJapanese(text) {
 
     if (!pronunciationEnabled()) {
-
-        window.speechSynthesis.cancel();
-
         return;
-
     }
 
 
-    if (
-        !("speechSynthesis" in window)
-    ) {
+    if (!("speechSynthesis" in window)) {
 
         alert(
-            "Your browser does not support Japanese pronunciation."
+            "Japanese pronunciation is not supported on this device."
         );
 
         return;
+    }
+
+
+    const synth = window.speechSynthesis;
+
+
+    function speakNow() {
+
+        synth.cancel();
+
+        // Some mobile browsers can remain paused/stuck
+        if (synth.paused) {
+            synth.resume();
+        }
+
+
+        const speech =
+            new SpeechSynthesisUtterance(text);
+
+
+        speech.lang = "ja-JP";
+        speech.rate = 0.85;
+        speech.pitch = 1;
+        speech.volume = 1;
+
+
+        // Use a Japanese voice when the device provides one
+        const voices = synth.getVoices();
+
+        const voice =
+            japaneseVoice ||
+            voices.find(function (v) {
+                return v.lang &&
+                    v.lang.toLowerCase().startsWith("ja");
+            });
+
+
+        if (voice) {
+            speech.voice = voice;
+        }
+
+
+        speech.onstart = function () {
+            console.log(
+                "Japanese pronunciation started:",
+                text
+            );
+        };
+
+
+        speech.onerror = function (event) {
+
+            console.error(
+                "Speech synthesis error:",
+                event.error
+            );
+
+        };
+
+
+        synth.speak(speech);
 
     }
 
 
-    window.speechSynthesis.cancel();
+    // Voices may not be ready immediately on mobile browsers
+    const voices = synth.getVoices();
 
 
-    const speech =
-        new SpeechSynthesisUtterance(text);
+    if (voices.length > 0) {
 
-    speech.lang =
-        "ja-JP";
+        speakNow();
 
-    speech.rate =
-        0.85;
+    } else {
 
-    speech.pitch =
-        1;
+        let handled = false;
 
 
-    window.speechSynthesis.speak(
-        speech
-    );
+        const handleVoices = function () {
+
+            if (handled) {
+                return;
+            }
+
+            handled = true;
+
+            loadJapaneseVoice();
+            speakNow();
+
+        };
+
+
+        synth.addEventListener(
+            "voiceschanged",
+            handleVoices,
+            { once: true }
+        );
+
+
+        // Fallback for browsers that do not fire the event reliably
+        setTimeout(function () {
+
+            if (!handled) {
+                handleVoices();
+            }
+
+        }, 1000);
+
+    }
 
 }
