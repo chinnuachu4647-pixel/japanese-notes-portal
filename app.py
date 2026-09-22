@@ -21,7 +21,7 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 DEMO_JLPT_EMAIL = "chinnuachu4647@gmail.com"
 
-DATABASE = "database.db"
+DATABASE = os.environ.get("DATABASE_PATH", "database.db")
 
 # =========================================================
 # JLPT DEMO UNLOCK KEY
