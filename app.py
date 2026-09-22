@@ -19,15 +19,10 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 # JLPT DEMO ACCOUNT
 # =========================================================
 
-DEMO_JLPT_EMAIL = "chinnuachu4647@gmail.com"
+DEMO_JLPT_EMAIL = os.environ.get("JLPT_DEMO_EMAIL", "")
+JLPT_DEMO_KEY = os.environ.get("JLPT_DEMO_KEY", "")
 
 DATABASE = os.environ.get("DATABASE_PATH", "database.db")
-
-# =========================================================
-# JLPT DEMO UNLOCK KEY
-# =========================================================
-
-JLPT_DEMO_KEY = "akshu2028"
 
 def get_certificate_progress(user_id, category):
     conn = get_db()
