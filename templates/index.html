@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Japanese Notes | Learn Japanese</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+
+<body class="welcome-page">
+
+
+    <!-- =====================================
+         DECORATIVE BACKGROUND
+    ====================================== -->
+
+    <div class="welcome-circle circle-one"></div>
+
+    <div class="welcome-circle circle-two"></div>
+
+    <div class="welcome-circle circle-three"></div>
+
+    <div class="welcome-circle circle-four"></div>
+
+
+    <!-- =====================================
+         NAVIGATION
+    ====================================== -->
+
+    <header class="welcome-nav">
+
+        <div class="welcome-logo-area">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                class="welcome-logo"
+                alt="Japanese Notes Logo"
+            >
+
+            <span class="brand-name">
+                Japanese Notes
+            </span>
+
+        </div>
+
+
+        <nav class="welcome-menu">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+            <a href="{{ url_for('start_learning') }}"
+               class="nav-login">
+                Start Learning
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =====================================
+         HERO SECTION
+    ====================================== -->
+
+    <main class="welcome-hero" id="home">
+
+
+        <!-- LEFT SIDE -->
+
+        <section class="hero-content">
+
+            <p class="hero-small-title">
+                🇯🇵 JAPANESE LEARNING PORTAL
+            </p>
+
+
+            <h1>
+                Learn
+                <span>Japanese</span>
+                with confidence.
+            </h1>
+
+
+            <p class="hero-description">
+
+                Learn Hiragana, Katakana, vocabulary
+                and grammar in one beautiful place.
+
+                Build your Japanese skills step by step
+                and enjoy your learning journey.
+
+            </p>
+
+
+            <!-- START LEARNING BUTTON -->
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{{ url_for('start_learning') }}"
+                    class="start-learning-btn"
+                >
+
+                    Start Learning
+
+                    <span>→</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- SMALL INFO -->
+
+            <div class="hero-info">
+
+
+                <div class="info-item">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>
+                        Japanese Notes
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <i class="fa-solid fa-language"></i>
+
+                    <span>
+                        Easy Learning
+                    </span>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                    <span>
+                        Learn Step by Step
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             RIGHT SIDE ILLUSTRATION
+        ====================================== -->
+
+        <!-- =====================================
+     RIGHT SIDE ILLUSTRATION
+====================================== -->
+
+<section class="hero-illustration">
+
+    <!-- CIRCLE BACKGROUND -->
+    <div class="illustration-circle"></div>
+
+
+    <!-- GIRL READING BOOK -->
+    <img
+        src="{{ url_for('static', filename='images/japanese-notes-girl-reading-circle.png') }}"
+        class="hero-girl-image"
+        alt="Girl reading a Japanese book"
+    >
+
+
+    <!-- JAPANESE DECORATIONS -->
+
+    <div class="floating-kanji kanji-one">
+        学
+    </div>
+
+    <div class="floating-kanji kanji-two">
+        日
+    </div>
+
+    <div class="floating-kanji kanji-three">
+        本
+    </div>
+
+
+    <!-- CHERRY BLOSSOMS -->
+
+    <div class="flower flower-one">
+        🌸
+    </div>
+
+    <div class="flower flower-two">
+        🌸
+    </div>
+
+</section>
+
+
+    </main>
+
+
+
+    <!-- =====================================
+         FEATURES
+    ====================================== -->
+
+    <section class="welcome-features"
+             id="features">
+
+
+        <!-- HIRAGANA / KATAKANA -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🌸
+            </div>
+
+            <h3>
+                Hiragana & Katakana
+            </h3>
+
+            <p>
+                Learn Japanese characters
+                from the basics.
+            </p>
+
+        </div>
+
+
+
+        <!-- GRAMMAR -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📖
+            </div>
+
+            <h3>
+                Grammar
+            </h3>
+
+            <p>
+                Understand Japanese grammar
+                and sentence structure.
+            </p>
+
+        </div>
+
+
+
+        <!-- VOCABULARY -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                💬
+            </div>
+
+            <h3>
+                Vocabulary
+            </h3>
+
+            <p>
+                Build useful Japanese vocabulary
+                for everyday communication.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         ABOUT
+    ====================================== -->
+
+    <section id="about"
+             class="welcome-about">
+
+        <h2>
+            About Japanese Notes
+        </h2>
+
+        <p>
+            Japanese Notes is a simple learning space
+            designed to help beginners learn Japanese
+            step by step.
+        </p>
+
+    </section>
+
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer class="welcome-footer">
+
+        <p>
+            🇯🇵 Japanese Notes Learning Portal
+        </p>
+
+        <span>
+            Learn Japanese Anytime, Anywhere.
+        </span>
+
+    </footer>
+
+
+</body>
+
+</html>

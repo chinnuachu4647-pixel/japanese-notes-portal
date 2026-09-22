@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Help & Support | Japanese Learning Portal</title>
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         CURRENT JAPANESE BACKGROUND
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .faq-page {
+
+            width: min(
+                1100px,
+                calc(100% - 30px)
+            );
+
+            margin: 0 auto;
+
+            padding:
+                35px
+                0
+                70px;
+
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ====================================================== */
+
+        .faq-topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .faq-back {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                10px
+                15px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.75);
+
+            background:
+                rgba(255,255,255,.72);
+
+            backdrop-filter:
+                blur(12px);
+
+            color: #6258ce;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            transition:
+                .2s ease;
+
+        }
+
+
+        .faq-back:hover {
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .faq-hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding:
+                42px
+                35px;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.90),
+                    rgba(246,241,255,.84)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.85);
+
+            backdrop-filter:
+                blur(18px);
+
+            box-shadow:
+                0 20px 55px
+                rgba(70,55,120,.12);
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .faq-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
+
+            border-radius: 50%;
+
+            top: -110px;
+
+            right: -50px;
+
+            background:
+                rgba(205,185,255,.25);
+
+        }
+
+
+        .faq-hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .faq-kicker {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                7px
+                12px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(98,88,206,.09);
+
+            color: #6258ce;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing:
+                .08em;
+
+        }
+
+
+        .faq-hero h1 {
+
+            margin:
+                15px
+                0
+                10px;
+
+            color: #302b43;
+
+            font-size:
+                clamp(
+                    31px,
+                    5vw,
+                    48px
+                );
+
+            line-height: 1.08;
+
+        }
+
+
+        .faq-hero h1 span {
+
+            color: #6258ce;
+
+        }
+
+
+        .faq-hero p {
+
+            max-width: 700px;
+
+            margin: 0;
+
+            color: #777184;
+
+            font-size: 14px;
+
+            line-height: 1.75;
+
+        }
+
+
+        .faq-japanese {
+
+            margin-top: 18px;
+
+            color: #6258ce;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ====================================================== */
+
+        .faq-content {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1.15fr;
+
+            gap: 22px;
+
+        }
+
+
+        .faq-card {
+
+            padding: 23px;
+
+            border-radius: 22px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.84);
+
+            background:
+                rgba(255,255,255,.84);
+
+            backdrop-filter:
+                blur(15px);
+
+            box-shadow:
+                0 14px 38px
+                rgba(70,55,120,.08);
+
+        }
+
+
+        /* =====================================================
+           QUESTIONS
+        ====================================================== */
+
+        .faq-card-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 17px;
+
+        }
+
+
+        .faq-card-icon {
+
+            width: 44px;
+
+            height: 44px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 13px;
+
+            background:
+                #eeeaff;
+
+            color: #6258ce;
+
+        }
+
+
+        .faq-card-header h2 {
+
+            margin: 0;
+
+            color: #302b43;
+
+            font-size: 19px;
+
+        }
+
+
+        .faq-card-header p {
+
+            margin:
+                3px
+                0
+                0;
+
+            color: #847e91;
+
+            font-size: 11px;
+
+        }
+
+
+        .faq-question-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 9px;
+
+        }
+
+
+        .faq-question {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding:
+                13px
+                14px;
+
+            border:
+                1px solid
+                #e7e2ef;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.70);
+
+            color: #403a50;
+
+            text-align: left;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                .2s ease;
+
+        }
+
+
+        .faq-question:hover {
+
+            border-color:
+                #b9b0ee;
+
+            transform:
+                translateX(3px);
+
+            background:
+                #faf9ff;
+
+        }
+
+
+        .faq-question.active {
+
+            border-color:
+                #8e84df;
+
+            background:
+                #f1eeff;
+
+            color:
+                #6258ce;
+
+        }
+
+
+        .faq-question i {
+
+            flex-shrink: 0;
+
+            color:
+                #8a82a7;
+
+        }
+
+
+        /* =====================================================
+           ANSWER
+        ====================================================== */
+
+        .faq-answer-card {
+
+            min-height: 360px;
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .faq-answer-empty {
+
+            flex: 1;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 25px;
+
+        }
+
+
+        .faq-answer-empty-inner {
+
+            max-width: 340px;
+
+        }
+
+
+        .faq-answer-empty-icon {
+
+            width: 65px;
+
+            height: 65px;
+
+            display: grid;
+
+            place-items: center;
+
+            margin:
+                0 auto
+                15px;
+
+            border-radius: 20px;
+
+            background:
+                #eeeaff;
+
+            color:
+                #6258ce;
+
+            font-size: 25px;
+
+        }
+
+
+        .faq-answer-empty h3 {
+
+            margin: 0 0 7px;
+
+            color: #403a50;
+
+            font-size: 17px;
+
+        }
+
+
+        .faq-answer-empty p {
+
+            margin: 0;
+
+            color: #8a8496;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .faq-answer {
+
+            display: none;
+
+        }
+
+
+        .faq-answer.show {
+
+            display: block;
+
+        }
+
+
+        .faq-answer-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                7px
+                10px;
+
+            border-radius: 999px;
+
+            background:
+                #eeeaff;
+
+            color:
+                #6258ce;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            margin-bottom: 16px;
+
+        }
+
+
+        .faq-answer h3 {
+
+            margin:
+                0
+                0
+                11px;
+
+            color:
+                #302b43;
+
+            font-size: 23px;
+
+            line-height: 1.25;
+
+        }
+
+
+        .faq-answer p {
+
+            margin:
+                0
+                0
+                14px;
+
+            color:
+                #696276;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+        }
+
+
+        .faq-answer-tip {
+
+            margin-top: 18px;
+
+            padding:
+                14px
+                15px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #faf5ff,
+                    #f3f0ff
+                );
+
+            border:
+                1px solid
+                #ebe5f5;
+
+        }
+
+
+        .faq-answer-tip strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color:
+                #6258ce;
+
+            font-size: 11px;
+
+        }
+
+
+        .faq-answer-tip span {
+
+            color:
+                #767082;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           CATEGORY LABEL
+        ====================================================== */
+
+        .faq-category {
+
+            margin:
+                20px
+                0
+                9px;
+
+            color:
+                #9891a4;
+
+            font-size: 9px;
+
+            font-weight: 900;
+
+            letter-spacing:
+                .1em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .faq-category:first-child {
+
+            margin-top: 0;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .faq-footer {
+
+            margin-top: 30px;
+
+            text-align: center;
+
+            color:
+                rgba(86,78,105,.7);
+
+            font-size: 10px;
+
+        }
+
+
+        .faq-footer-jp {
+
+            margin-bottom: 4px;
+
+            color:
+                #6258ce;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        body.dark-mode .faq-back,
+        body.dark-mode .faq-hero,
+        body.dark-mode .faq-card {
+
+            background:
+                rgba(31,33,48,.88);
+
+            border-color:
+                rgba(80,83,107,.72);
+
+        }
+
+
+        body.dark-mode .faq-hero h1,
+        body.dark-mode .faq-card-header h2,
+        body.dark-mode .faq-answer h3,
+        body.dark-mode .faq-answer-empty h3 {
+
+            color:
+                #f3efff;
+
+        }
+
+
+        body.dark-mode .faq-hero p,
+        body.dark-mode .faq-card-header p,
+        body.dark-mode .faq-answer p,
+        body.dark-mode .faq-answer-empty p,
+        body.dark-mode .faq-footer {
+
+            color:
+                #aaa5b9;
+
+        }
+
+
+        body.dark-mode .faq-question {
+
+            background:
+                rgba(37,39,56,.78);
+
+            border-color:
+                #41445c;
+
+            color:
+                #ddd8eb;
+
+        }
+
+
+        body.dark-mode .faq-question:hover {
+
+            background:
+                #2c2f43;
+
+        }
+
+
+        body.dark-mode .faq-question.active {
+
+            background:
+                #34314d;
+
+            border-color:
+                #7168c5;
+
+            color:
+                #bcb5ff;
+
+        }
+
+
+        body.dark-mode .faq-answer-tip {
+
+            background:
+                #2c2a40;
+
+            border-color:
+                #41445b;
+
+        }
+
+
+        body.dark-mode .faq-answer-tip span {
+
+            color:
+                #aaa5ba;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 850px) {
+
+            .faq-content {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .faq-answer-card {
+
+                min-height: 300px;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .faq-page {
+
+                width:
+                    calc(100% - 20px);
+
+                padding-top: 20px;
+
+            }
+
+            .faq-hero {
+
+                padding:
+                    30px
+                    22px;
+
+                border-radius: 22px;
+
+            }
+
+            .faq-card {
+
+                padding:
+                    19px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="internal-page">
+
+
+<div class="faq-page">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <div class="faq-topbar">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="faq-back"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="faq-hero">
+
+        <div class="faq-hero-content">
+
+            <div class="faq-kicker">
+
+                <i class="fa-solid fa-circle-question"></i>
+
+                HELP & SUPPORT
+
+            </div>
+
+
+            <h1>
+
+                How can we
+                <span>help you?</span>
+
+            </h1>
+
+
+            <p>
+
+                Choose a common question below.
+                Your answer will appear instantly.
+
+            </p>
+
+
+            <div class="faq-japanese">
+
+                お困りですか？
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FAQ CONTENT
+    ====================================================== -->
+
+    <section class="faq-content">
+
+
+        <!-- =================================================
+             QUESTIONS
+        ================================================== -->
+
+        <div class="faq-card">
+
+
+            <div class="faq-card-header">
+
+                <div class="faq-card-icon">
+
+                    <i class="fa-solid fa-list"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Common Questions
+                    </h2>
+
+                    <p>
+                        Select a question to see the answer.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="faq-category">
+                Account
+            </div>
+
+
+            <div class="faq-question-list">
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="password"
+                >
+
+                    <span>
+                        How do I reset my password?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="login"
+                >
+
+                    <span>
+                        Why can't I log in?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="profile"
+                >
+
+                    <span>
+                        How do I change my profile details?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- LEARNING -->
+
+            <div class="faq-category">
+                Learning
+            </div>
+
+
+            <div class="faq-question-list">
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="lessons"
+                >
+
+                    <span>
+                        How do I start a lesson?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="flashcards"
+                >
+
+                    <span>
+                        How do I use flashcards?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="translator"
+                >
+
+                    <span>
+                        How do I use the translator?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="progress"
+                >
+
+                    <span>
+                        How is my learning progress tracked?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- JLPT -->
+
+            <div class="faq-category">
+                JLPT
+            </div>
+
+
+            <div class="faq-question-list">
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="nlevel"
+                >
+
+                    <span>
+                        How do I unlock the next JLPT level?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="jlpt"
+                >
+
+                    <span>
+                        What happens after I finish a JLPT test?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- CERTIFICATES -->
+
+            <div class="faq-category">
+                Certificates
+            </div>
+
+
+            <div class="faq-question-list">
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="certificate"
+                >
+
+                    <span>
+                        How do I get a certificate?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="download"
+                >
+
+                    <span>
+                        How do I download my certificate?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- SETTINGS -->
+
+            <div class="faq-category">
+                Settings
+            </div>
+
+
+            <div class="faq-question-list">
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="darkmode"
+                >
+
+                    <span>
+                        How do I change dark mode?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="faq-question"
+                    data-question="notifications"
+                >
+
+                    <span>
+                        How do I manage notifications?
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             ANSWER
+        ================================================== -->
+
+        <div class="faq-card faq-answer-card">
+
+
+            <div class="faq-card-header">
+
+                <div class="faq-card-icon">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Instant Answer
+                    </h2>
+
+                    <p>
+                        Your selected answer appears here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY STATE -->
+
+            <div
+                id="faqEmpty"
+                class="faq-answer-empty"
+            >
+
+                <div class="faq-answer-empty-inner">
+
+                    <div class="faq-answer-empty-icon">
+
+                        <i class="fa-regular fa-hand-pointer"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Select a question
+                    </h3>
+
+
+                    <p>
+
+                        Choose one of the common questions
+                        on the left and the answer will
+                        appear instantly.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ANSWER -->
+
+            <div
+                id="faqAnswer"
+                class="faq-answer"
+            >
+
+                <div class="faq-answer-badge">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    INSTANT ANSWER
+
+                </div>
+
+
+                <h3 id="faqAnswerTitle"></h3>
+
+
+                <p id="faqAnswerText"></p>
+
+
+                <div class="faq-answer-tip">
+
+                    <strong>
+
+                        <i class="fa-solid fa-lightbulb"></i>
+
+                        Helpful Tip
+
+                    </strong>
+
+                    <span id="faqAnswerTip"></span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="faq-footer">
+
+        <div class="faq-footer-jp">
+            日本語の学習を、一緒に。
+        </div>
+
+        Japanese Learning Portal · Help & Support
+
+    </footer>
+
+
+</div>
+
+
+<!-- =====================================================
+     FAQ JAVASCRIPT
+====================================================== -->
+
+<script>
+
+const faqData = {
+
+    password: {
+        title: "How do I reset my password?",
+        answer:
+            "Open the Forgot Password page from the login screen. Enter your registered email address and date of birth, then enter your new password twice. After the reset is completed, use the new password to log in.",
+        tip:
+            "Make sure your new password and confirmation password are exactly the same."
+    },
+
+    login: {
+        title: "Why can't I log in?",
+        answer:
+            "Check that you are using the email address registered with your account and the correct password. If you no longer know your password, use the Forgot Password option on the login page.",
+        tip:
+            "Check your email spelling and make sure there are no extra spaces."
+    },
+
+    profile: {
+        title: "How do I change my profile details?",
+        answer:
+            "Open Settings and go to your Profile. From there you can view and edit your account information.",
+        tip:
+            "Save your changes after editing your profile."
+    },
+
+    lessons: {
+        title: "How do I start a lesson?",
+        answer:
+            "Open the Learning Hub or Notes section, choose a Japanese category, and select the lesson you want to study.",
+        tip:
+            "Completing lessons contributes to your learning progress."
+    },
+
+    flashcards: {
+        title: "How do I use flashcards?",
+        answer:
+            "Open Flashcards from the learning area. The portal displays a set of Japanese vocabulary cards for practice.",
+        tip:
+            "Use flashcards regularly to reinforce vocabulary you have already studied."
+    },
+
+    translator: {
+        title: "How do I use the translator?",
+        answer:
+            "Open the Translator page, enter the text you want to translate, choose the translation direction, and submit it.",
+        tip:
+            "Short, clear sentences usually produce easier-to-understand translation results."
+    },
+
+    progress: {
+        title: "How is my learning progress tracked?",
+        answer:
+            "The portal records your completed lessons, quiz activity, and JLPT progress for your account. Your dashboard and progress pages use this information to show your learning status.",
+        tip:
+            "Keep completing lessons and quizzes to build your progress history."
+    },
+
+    nlevel: {
+        title: "How do I unlock the next JLPT level?",
+        answer:
+            "The JLPT progression system uses your performance at the current level. Completing a level with the required score allows the next level to become available.",
+        tip:
+            "Check your JLPT progress page to see which level is currently unlocked."
+    },
+
+    jlpt: {
+        title: "What happens after I finish a JLPT test?",
+        answer:
+            "After finishing a JLPT test, the portal calculates your score and shows a result page with your performance. Your JLPT progress is then updated.",
+        tip:
+            "Review your results to identify areas that need more practice."
+    },
+
+    certificate: {
+        title: "How do I get a certificate?",
+        answer:
+            "Certificates are available when you have completed all required lessons for an eligible category. The certificate page shows your completion progress and certificate availability.",
+        tip:
+            "Finish every required lesson in the category before trying to generate the certificate."
+    },
+
+    download: {
+        title: "How do I download my certificate?",
+        answer:
+            "Open the Certificates section, select an eligible certificate, and use the download option to save the generated PDF certificate.",
+        tip:
+            "Your certificate is generated for your account and selected learning category."
+    },
+
+    darkmode: {
+        title: "How do I change dark mode?",
+        answer:
+            "Open Settings and use the Theme option under Appearance. Choose Default, Light, or Dark, then save your settings.",
+        tip:
+            "Your selected theme is stored in the browser so it can be reused."
+    },
+
+    notifications: {
+        title: "How do I manage notifications?",
+        answer:
+            "Open the Settings page and use the Learning Reminders option to control notification preferences. Notifications shown on the dashboard can also be managed there.",
+        tip:
+            "You can clear dashboard notifications when you no longer need them."
+    }
+
+};
+
+
+const questions =
+    document.querySelectorAll(
+        ".faq-question"
+    );
+
+
+const emptyState =
+    document.getElementById(
+        "faqEmpty"
+    );
+
+
+const answerBox =
+    document.getElementById(
+        "faqAnswer"
+    );
+
+
+const answerTitle =
+    document.getElementById(
+        "faqAnswerTitle"
+    );
+
+
+const answerText =
+    document.getElementById(
+        "faqAnswerText"
+    );
+
+
+const answerTip =
+    document.getElementById(
+        "faqAnswerTip"
+    );
+
+
+questions.forEach(function (question) {
+
+    question.addEventListener(
+        "click",
+        function () {
+
+            const key =
+                this.dataset.question;
+
+            const data =
+                faqData[key];
+
+            if (!data) {
+                return;
+            }
+
+
+            questions.forEach(
+                function (item) {
+
+                    item.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+            this.classList.add(
+                "active"
+            );
+
+
+            emptyState.style.display =
+                "none";
+
+
+            answerBox.classList.add(
+                "show"
+            );
+
+
+            answerTitle.textContent =
+                data.title;
+
+
+            answerText.textContent =
+                data.answer;
+
+
+            answerTip.textContent =
+                data.tip;
+
+        }
+    );
+
+});
+
+
+</script>
+
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}">
+</script>
+
+
+<script
+    src="{{ url_for('static', filename='js/pronunciation.js') }}">
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1079 @@
+/* =========================================================
+   SETTINGS PAGE
+   FIXED BACKGROUND + GLASS CARDS
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+
+/* =========================================================
+   FIXED BACKGROUND
+   ========================================================= */
+
+body.internal-page {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    color: #211d35;
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.38),
+            rgba(255, 255, 255, 0.38)
+        ),
+        url("../images/settings-background.jpg");
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    /*
+       THIS IS THE IMPORTANT PART.
+
+       The image is attached to the viewport,
+       NOT to the scrolling page content.
+    */
+    background-attachment: fixed;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    width: 100%;
+    min-height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 42px;
+
+    /*
+       Header stays clean and readable.
+    */
+    background: rgba(255, 255, 255, 0.94);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+
+    box-shadow:
+        0 5px 25px rgba(40, 25, 80, 0.08);
+
+    position: relative;
+    z-index: 100;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.back-btn {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    color: #6848d8;
+
+    text-decoration: none;
+
+    font-size: 21px;
+
+    box-shadow:
+        0 6px 20px rgba(82, 58, 150, 0.10);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.back-btn:hover {
+    transform: translateX(-3px);
+
+    background: #ffffff;
+
+    box-shadow:
+        0 8px 24px rgba(82, 58, 150, 0.16);
+}
+
+
+.title h1 {
+    margin: 0;
+
+    font-size: 31px;
+    font-weight: 700;
+
+    color: #211d35;
+}
+
+
+.title span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #706a82;
+
+    font-size: 15px;
+}
+
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+
+.icon-btn {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.88);
+
+    border: 1px solid rgba(108, 79, 211, 0.18);
+
+    color: #6848d8;
+
+    text-decoration: none;
+
+    font-size: 19px;
+
+    box-shadow:
+        0 6px 20px rgba(82, 58, 150, 0.10);
+
+    transition: 0.2s ease;
+}
+
+
+.icon-btn:hover {
+    background: #ffffff;
+
+    color: #5639bc;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 9px 25px rgba(82, 58, 150, 0.16);
+}
+
+
+/* =========================================================
+   PREMIUM GLASS SETTINGS CARDS
+   ========================================================= */
+
+.settings-container {
+    width: min(1050px, calc(100% - 40px));
+    margin: 45px auto 70px;
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   MAIN SETTINGS HEADING
+   ========================================================= */
+
+.settings-heading {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 28px 32px;
+    margin-bottom: 26px;
+
+    /* REAL TRANSPARENT GLASS */
+    background: rgba(255, 255, 255, 0.28);
+
+    border: 1px solid rgba(255, 255, 255, 0.65);
+
+    border-radius: 24px;
+
+    /* glass depth */
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+
+    box-shadow:
+        0 12px 35px rgba(44, 27, 82, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+    overflow: hidden;
+}
+
+
+/* subtle glass highlight */
+
+.settings-heading::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255,255,255,0.35),
+            rgba(255,255,255,0.05) 45%,
+            rgba(255,255,255,0.18)
+        );
+
+    pointer-events: none;
+}
+
+
+/* keep content above highlight */
+
+.settings-heading > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================================
+   HEADING ICON
+   ========================================================= */
+
+.settings-heading-icon {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 18px;
+
+    background: rgba(245, 240, 255, 0.62);
+
+    border: 1px solid rgba(255, 255, 255, 0.7);
+
+    color: #6244c5;
+
+    font-size: 30px;
+
+    box-shadow:
+        0 6px 18px rgba(83, 58, 160, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+
+.settings-heading h2 {
+    margin: 0 0 6px;
+
+    color: #211d35;
+
+    font-size: 27px;
+    font-weight: 700;
+
+    text-shadow:
+        0 1px 2px rgba(255,255,255,0.8);
+}
+
+
+.settings-heading p {
+    margin: 0;
+
+    color: #504b66;
+
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   SETTINGS CARD
+   ========================================================= */
+
+.settings-card {
+    position: relative;
+
+    width: 100%;
+
+    margin-bottom: 24px;
+
+    padding: 28px 32px;
+
+    /* IMPORTANT:
+       More transparent than before */
+    background: rgba(255, 255, 255, 0.24);
+
+    border: 1px solid rgba(255, 255, 255, 0.68);
+
+    border-radius: 24px;
+
+    backdrop-filter: blur(14px) saturate(125%);
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+
+    box-shadow:
+        0 14px 40px rgba(45, 27, 82, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+/* glass reflection */
+
+.settings-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background: rgba(255, 255, 255, 0.85);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
+
+.settings-card:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(255, 255, 255, 0.9);
+
+    box-shadow:
+        0 18px 45px rgba(45, 27, 82, 0.20),
+        inset 0 1px 0 rgba(255,255,255,0.75);
+}
+
+
+/* =========================================================
+   CARD TITLE
+   ========================================================= */
+
+.settings-card-title {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding-bottom: 18px;
+    margin-bottom: 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.55);
+}
+
+
+.settings-card-title > span {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 14px;
+
+    background: rgba(248, 244, 255, 0.65);
+
+    border: 1px solid rgba(255,255,255,0.7);
+
+    color: #5d3db9;
+
+    font-size: 22px;
+
+    box-shadow:
+        0 5px 15px rgba(80, 55, 150, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+
+.settings-card-title h3 {
+    margin: 0;
+
+    color: #211d35;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    text-shadow:
+        0 1px 2px rgba(255,255,255,0.7);
+}
+
+
+.settings-card-title p {
+    margin: 5px 0 0;
+
+    color: #514b68;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   PROFESSIONAL SETTINGS ROWS
+   ========================================================= */
+
+.settings-option {
+    min-height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    padding: 20px 6px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+
+    transition:
+        background 0.2s ease,
+        padding 0.2s ease;
+}
+
+.settings-option:last-child {
+    border-bottom: none;
+}
+
+
+/* Text area */
+
+.settings-option > div:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.settings-option strong {
+    display: block;
+
+    margin: 0 0 7px;
+
+    color: #211d35;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    letter-spacing: -0.1px;
+}
+
+.settings-option p {
+    margin: 0;
+
+    color: #625c76;
+
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+
+/* Slight hover highlight */
+
+.settings-option:hover {
+    padding-left: 12px;
+    padding-right: 12px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   BUTTONS INSIDE OPTIONS
+   ========================================================= */
+
+.settings-option .settings-btn,
+.settings-option .logout-btn,
+.settings-option .settings-select,
+.settings-option .switch {
+    flex-shrink: 0;
+}
+
+
+/* Buttons */
+
+.settings-btn {
+    min-width: 145px;
+
+    padding: 12px 20px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 7px 18px rgba(91, 66, 190, 0.20);
+
+    font-weight: 700;
+}
+
+.settings-btn:hover {
+    box-shadow:
+        0 10px 24px rgba(91, 66, 190, 0.28);
+}
+
+
+/* =========================================================
+   DARK MODE ROWS
+   ========================================================= */
+
+body.dark-mode .settings-option {
+    border-bottom-color: rgba(255, 255, 255, 0.10);
+}
+
+body.dark-mode .settings-option strong {
+    color: #ffffff !important;
+}
+
+body.dark-mode .settings-option p {
+    color: #c2c5d3 !important;
+}
+
+body.dark-mode .settings-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .settings-option {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .settings-option .settings-btn,
+    .settings-option .logout-btn,
+    .settings-option .settings-select {
+        width: 100%;
+    }
+
+    .settings-option:hover {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+}
+
+/* =========================================================
+   LOGOUT BUTTON
+   ========================================================= */
+
+.logout-btn {
+    min-width: 120px;
+
+    padding: 11px 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 235, 239, 0.55);
+
+    border: 1px solid rgba(225, 120, 140, 0.35);
+
+    color: #c8465a;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+
+.logout-btn:hover {
+    background: rgba(255, 220, 226, 0.75);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.settings-select {
+    min-width: 170px;
+
+    padding: 12px 15px;
+
+    border: 1px solid rgba(255,255,255,0.75);
+
+    border-radius: 13px;
+
+    background: rgba(255,255,255,0.45);
+
+    color: #292440;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    outline: none;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+
+.settings-select:focus {
+    border-color: rgba(108,79,211,0.55);
+
+    box-shadow:
+        0 0 0 3px rgba(108,79,211,0.14);
+}
+
+
+/* =========================================================
+   SAVE AREA
+   ========================================================= */
+
+.settings-save-area {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 26px;
+
+    text-align: center;
+
+    background: rgba(255,255,255,0.24);
+
+    border: 1px solid rgba(255,255,255,0.68);
+
+    border-radius: 24px;
+
+    backdrop-filter: blur(14px) saturate(125%);
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+
+    box-shadow:
+        0 14px 40px rgba(45,27,82,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+
+.save-settings-btn {
+    padding: 14px 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7554dc,
+            #6242c9
+        );
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 9px 22px rgba(108,79,211,0.28);
+
+    transition: 0.2s ease;
+}
+
+
+.save-settings-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 13px 28px rgba(108,79,211,0.35);
+}
+
+
+/* =========================================================
+   FOOTER BUTTON
+   ========================================================= */
+
+.dashboard-btn {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px 22px;
+
+    border-radius: 13px;
+
+    background: rgba(255,255,255,0.35);
+
+    border: 1px solid rgba(255,255,255,0.7);
+
+    color: #6244c5;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 7px 20px rgba(60,40,110,0.12);
+
+    transition: 0.2s ease;
+}
+
+
+.dashboard-btn:hover {
+    transform: translateY(-2px);
+
+    background: rgba(255,255,255,0.55);
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.dark-mode .settings-heading,
+body.dark-mode .settings-card,
+body.dark-mode .settings-save-area {
+
+    background: rgba(25,28,43,0.48);
+
+    border-color: rgba(150,155,190,0.35);
+
+    box-shadow:
+        0 14px 40px rgba(0,0,0,0.30),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+
+body.dark-mode .settings-heading h2,
+body.dark-mode .settings-card-title h3,
+body.dark-mode .settings-option strong {
+
+    color: #ffffff;
+}
+
+
+body.dark-mode .settings-heading p,
+body.dark-mode .settings-card-title p,
+body.dark-mode .settings-option p {
+
+    color: #d0d2df;
+}
+
+
+body.dark-mode .settings-card-title,
+body.dark-mode .settings-option {
+
+    border-color: rgba(255,255,255,0.12);
+}
+
+
+body.dark-mode .settings-heading-icon,
+body.dark-mode .settings-card-title > span {
+
+    background: rgba(70,64,105,0.55);
+
+    color: #c5baff;
+
+    border-color: rgba(255,255,255,0.15);
+}
+
+
+body.dark-mode .settings-select {
+
+    background: rgba(30,33,48,0.65);
+
+    color: white;
+
+    border-color: rgba(255,255,255,0.2);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .settings-container {
+        width: calc(100% - 24px);
+
+        margin-top: 25px;
+    }
+
+
+    .settings-heading {
+        padding: 22px;
+
+        border-radius: 20px;
+    }
+
+
+    .settings-heading-icon {
+        width: 52px;
+        height: 52px;
+
+        font-size: 25px;
+    }
+
+
+    .settings-heading h2 {
+        font-size: 23px;
+    }
+
+
+    .settings-heading p {
+        font-size: 13px;
+    }
+
+
+    .settings-card {
+        padding: 22px;
+
+        margin-bottom: 18px;
+
+        border-radius: 20px;
+    }
+
+
+    .settings-option {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+
+    .settings-btn,
+    .logout-btn,
+    .settings-select {
+
+        width: 100%;
+    }
+
+
+    .switch {
+        align-self: flex-end;
+    }
+
+
+    .settings-save-area {
+        padding: 22px;
+
+        border-radius: 20px;
+    }
+
+
+    .save-settings-btn {
+        width: 100%;
+    }
+}
+/* =========================================================
+   GLOBAL PRONUNCIATION ICON
+   ========================================================= */
+
+.global-pronunciation-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 6px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 15px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    opacity: 0.75;
+
+    transition: 0.2s ease;
+}
+
+
+.global-pronunciation-btn:hover {
+
+    opacity: 1;
+
+    transform: scale(1.15);
+}
+
+
+/* =========================================================
+   LOGIN ERROR
+   ========================================================= */
+
+.login-error {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 8px;
+
+    padding-left: 3px;
+
+    color: #d94b5b;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.login-error i {
+
+    color: #d94b5b;
+
+    font-size: 14px;
+}
+/* =========================================================
+   FORCE GLASS SETTINGS CARDS
+   ========================================================= */
+
+body.internal-page .settings-heading,
+body.internal-page .settings-card,
+body.internal-page .settings-save-area {
+
+    background: rgba(255, 255, 255, 0.35) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.75) !important;
+
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+
+    box-shadow:
+        0 20px 50px rgba(40, 20, 90, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+
+/* Make the background stronger behind the glass */
+
+body.internal-page {
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.15),
+            rgba(255, 255, 255, 0.15)
+        ),
+        url("../images/settings-background.jpg") !important;
+
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+
+    background-attachment: fixed !important;
+}
+
+
+/* Keep text strongly visible */
+
+body.internal-page .settings-heading h2,
+body.internal-page .settings-card-title h3,
+body.internal-page .settings-option strong {
+
+    color: #211d35 !important;
+
+    text-shadow:
+        0 1px 2px rgba(255,255,255,0.5);
+}
+
+
+body.internal-page .settings-heading p,
+body.internal-page .settings-card-title p,
+body.internal-page .settings-option p {
+
+    color: #514b68 !important;
+}
+
+
+/* Slightly transparent icon boxes */
+
+body.internal-page .settings-heading-icon,
+body.internal-page .settings-card-title > span {
+
+    background: rgba(238, 231, 255, 0.60) !important;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}

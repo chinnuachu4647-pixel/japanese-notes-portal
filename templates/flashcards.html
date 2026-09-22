@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Japanese Flashcards</title>
+
+
+    <!-- =====================================================
+         MAIN THEME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FIXED BACKGROUND
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        body {
+            margin: 0;
+
+            min-height: 100vh;
+
+            background: transparent !important;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #302b43;
+        }
+
+
+        /* =====================================================
+           PAGE CONTAINER
+        ===================================================== */
+
+        .flashcard-page {
+            width: min(850px, calc(100% - 30px));
+
+            margin: 0 auto;
+
+            padding: 35px 0 70px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .flashcard-header {
+
+            padding: 24px;
+
+            margin-bottom: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.93),
+                    rgba(249,246,255,0.86)
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.90);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 14px 36px rgba(65,50,110,0.10);
+
+            backdrop-filter: blur(15px);
+
+            -webkit-backdrop-filter: blur(15px);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .flashcard-header::after {
+
+            content: "🌸";
+
+            position: absolute;
+
+            right: 22px;
+
+            top: 15px;
+
+            font-size: 34px;
+
+            opacity: 0.18;
+
+            pointer-events: none;
+        }
+
+
+        .flashcard-header h1 {
+
+            margin: 0;
+
+            color: #302b43;
+
+            font-size: 29px;
+
+            line-height: 1.2;
+        }
+
+
+        .flashcard-header p {
+
+            margin: 7px 0 0;
+
+            color: #77718e;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           FLASHCARD
+        ===================================================== */
+
+        .flashcard {
+
+            min-height: 390px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 35px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.94),
+                    rgba(249,246,255,0.88)
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.90);
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 18px 45px rgba(65,50,110,0.12);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter: blur(16px);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .flashcard::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            right: -120px;
+            top: -120px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(108,99,217,0.06);
+
+            pointer-events: none;
+        }
+
+
+        .flashcard-inner {
+
+            width: 100%;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           CARD NUMBER
+        ===================================================== */
+
+        .flashcard-number {
+
+            margin-bottom: 25px;
+
+            color: #8a8399;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           JAPANESE + SPEAKER
+        ===================================================== */
+
+        .flashcard-japanese-row {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 14px;
+
+            margin-top: 5px;
+        }
+
+
+        .flashcard-japanese {
+
+            color: #6258ce;
+
+            font-size: 80px;
+
+            font-weight: 800;
+
+            line-height: 1.1;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           SPEAKER BUTTON
+        ===================================================== */
+
+        .flashcard-speaker {
+
+            width: 48px;
+
+            height: 48px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            padding: 0;
+
+            border:
+                1px solid #ddd8eb;
+
+            border-radius: 13px;
+
+            background: #f2effb;
+
+            color: #6258ce;
+
+            font-size: 21px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 16px rgba(98,88,206,0.10);
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .flashcard-speaker:hover {
+
+            background: #e8e4f7;
+
+            color: #4e45b8;
+
+            transform: scale(1.05);
+
+            box-shadow:
+                0 8px 20px rgba(98,88,206,0.15);
+        }
+
+
+        .flashcard-speaker:active {
+
+            transform: scale(0.96);
+        }
+
+
+        .flashcard-speaker.speaking {
+
+            background: #6258ce;
+
+            border-color: #6258ce;
+
+            color: white;
+
+            transform: scale(1.04);
+        }
+
+
+        /* =====================================================
+           ROMAJI
+        ===================================================== */
+
+        .flashcard-romaji {
+
+            margin-top: 12px;
+
+            color: #77718e;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           MEANING
+        ===================================================== */
+
+        .flashcard-meaning {
+
+            margin-top: 18px;
+
+            color: #302b43;
+
+            font-size: 22px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .flashcard-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 30px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .flashcard-btn {
+
+            min-height: 44px;
+
+            padding: 0 18px;
+
+            border:
+                1px solid transparent;
+
+            border-radius: 10px;
+
+            background: #6258ce;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .flashcard-btn:hover {
+
+            background: #4e45b8;
+
+            color: white;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 18px rgba(98,88,206,0.20);
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        .flashcard-back {
+
+            background: #f2effb;
+
+            color: #6258ce;
+
+            border-color: #e1dcec;
+
+        }
+
+
+        .flashcard-back:hover {
+
+            background: #e8e4f7;
+
+            color: #4e45b8;
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        body.dark-mode .flashcard-header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,0.95),
+                    rgba(37,36,54,0.91)
+                );
+
+            border-color:
+                rgba(255,255,255,0.08);
+        }
+
+
+        body.dark-mode .flashcard-header h1 {
+
+            color: #f5f2ff;
+        }
+
+
+        body.dark-mode .flashcard-header p {
+
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .flashcard {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,0.95),
+                    rgba(37,36,54,0.91)
+                );
+
+            border-color:
+                rgba(255,255,255,0.08);
+
+            box-shadow:
+                0 18px 45px rgba(0,0,0,0.25);
+        }
+
+
+        body.dark-mode .flashcard-japanese {
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .flashcard-romaji {
+
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .flashcard-meaning {
+
+            color: #f0edf8;
+        }
+
+
+        body.dark-mode .flashcard-speaker {
+
+            background: #302e50;
+
+            border-color: #41445b;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .flashcard-speaker:hover {
+
+            background: #3a3c52;
+
+            color: #c0baff;
+        }
+
+
+        body.dark-mode .flashcard-speaker.speaking {
+
+            background: #766de0;
+
+            border-color: #766de0;
+
+            color: white;
+        }
+
+
+        body.dark-mode .flashcard-back {
+
+            background: #252838;
+
+            border-color: #41445b;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .flashcard-back:hover {
+
+            background: #303348;
+
+            color: #c0baff;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .flashcard-page {
+
+                width: calc(100% - 24px);
+
+                padding-top: 22px;
+            }
+
+
+            .flashcard-header {
+
+                padding: 21px 18px;
+
+                border-radius: 19px;
+            }
+
+
+            .flashcard-header h1 {
+
+                font-size: 24px;
+            }
+
+
+            .flashcard-header p {
+
+                font-size: 12px;
+            }
+
+
+            .flashcard {
+
+                min-height: 340px;
+
+                padding: 25px 18px;
+
+                border-radius: 20px;
+            }
+
+
+            .flashcard-japanese-row {
+
+                gap: 10px;
+            }
+
+
+            .flashcard-japanese {
+
+                font-size: 62px;
+            }
+
+
+            .flashcard-speaker {
+
+                width: 42px;
+
+                height: 42px;
+
+                border-radius: 11px;
+
+                font-size: 19px;
+            }
+
+
+            .flashcard-meaning {
+
+                font-size: 19px;
+            }
+
+
+            .flashcard-btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="flashcard-page">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <section class="flashcard-header">
+
+        <h1>
+            🗂️ Japanese Flashcards
+        </h1>
+
+        <p>
+            Review Japanese vocabulary, {{ username }}!
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         FLASHCARD
+    ================================================== -->
+
+    <section class="flashcard">
+
+
+        <div class="flashcard-inner">
+
+
+            <!-- CARD NUMBER -->
+
+            <div
+                class="flashcard-number"
+                id="cardNumber"
+            ></div>
+
+
+            <!-- JAPANESE + SPEAKER -->
+
+            <div class="flashcard-japanese-row">
+
+                <div
+                    class="flashcard-japanese"
+                    id="japanese"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="flashcard-speaker"
+                    id="flashcardSpeaker"
+                    title="Listen to Japanese pronunciation"
+                    aria-label="Listen to Japanese pronunciation"
+                >
+
+                    <i class="fa-solid fa-volume-high"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ROMAJI -->
+
+            <div
+                class="flashcard-romaji"
+                id="romaji"
+            ></div>
+
+
+            <!-- MEANING -->
+
+            <div
+                class="flashcard-meaning"
+                id="meaning"
+            ></div>
+
+
+            <!-- PREVIOUS / NEXT -->
+
+            <div class="flashcard-actions">
+
+                <button
+                    type="button"
+                    class="flashcard-btn"
+                    id="previousBtn"
+                >
+
+                    ← Previous
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="flashcard-btn"
+                    id="nextBtn"
+                >
+
+                    Next →
+
+                </button>
+
+            </div>
+
+
+            <!-- BACK -->
+
+            <div class="flashcard-actions">
+
+                <a
+                    href="/learning_hub"
+                    class="flashcard-btn flashcard-back"
+                >
+
+                    ← Back to Learning Hub
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FLASHCARD DATA
+====================================================== -->
+
+<script
+    id="flashcard-data"
+    type="application/json"
+>{{ flashcards | tojson }}</script>
+
+
+<!-- =====================================================
+     FLASHCARD JAVASCRIPT
+====================================================== -->
+
+<script>
+
+const cards = JSON.parse(
+    document.getElementById("flashcard-data").textContent
+);
+
+
+let currentIndex = 0;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const cardNumber =
+    document.getElementById("cardNumber");
+
+const japanese =
+    document.getElementById("japanese");
+
+const romaji =
+    document.getElementById("romaji");
+
+const meaning =
+    document.getElementById("meaning");
+
+const speaker =
+    document.getElementById("flashcardSpeaker");
+
+const previousBtn =
+    document.getElementById("previousBtn");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+
+/* =====================================================
+   SHOW CARD
+===================================================== */
+
+function showCard() {
+
+    if (!cards || cards.length === 0) {
+
+        cardNumber.textContent = "No cards available";
+
+        japanese.textContent = "—";
+
+        romaji.textContent = "";
+
+        meaning.textContent = "";
+
+        speaker.disabled = true;
+
+        previousBtn.disabled = true;
+
+        nextBtn.disabled = true;
+
+        return;
+    }
+
+
+    const card =
+        cards[currentIndex];
+
+
+    cardNumber.textContent =
+        "Card " +
+        (currentIndex + 1) +
+        " / " +
+        cards.length;
+
+
+    japanese.textContent =
+        card.japanese || "";
+
+
+    romaji.textContent =
+        card.romaji || "";
+
+
+    meaning.textContent =
+        card.meaning || "";
+}
+
+
+/* =====================================================
+   NEXT
+===================================================== */
+
+function nextCard() {
+
+    stopSpeech();
+
+
+    if (!cards.length) {
+        return;
+    }
+
+
+    currentIndex =
+        (currentIndex + 1) %
+        cards.length;
+
+
+    showCard();
+}
+
+
+/* =====================================================
+   PREVIOUS
+===================================================== */
+
+function previousCard() {
+
+    stopSpeech();
+
+
+    if (!cards.length) {
+        return;
+    }
+
+
+    currentIndex =
+        (currentIndex - 1 + cards.length) %
+        cards.length;
+
+
+    showCard();
+}
+
+
+/* =====================================================
+   GET JAPANESE VOICE
+===================================================== */
+
+function getJapaneseVoice() {
+
+    const voices =
+        window.speechSynthesis.getVoices();
+
+
+    return voices.find(function (voice) {
+
+        return (
+            voice.lang &&
+            voice.lang
+                .toLowerCase()
+                .startsWith("ja")
+        );
+
+    }) || null;
+}
+
+
+/* =====================================================
+   STOP SPEECH
+===================================================== */
+
+function stopSpeech() {
+
+    if (
+        "speechSynthesis" in window
+    ) {
+
+        window.speechSynthesis.cancel();
+
+    }
+
+
+    speaker.classList.remove("speaking");
+
+    speaker.innerHTML =
+        '<i class="fa-solid fa-volume-high"></i>';
+}
+
+
+/* =====================================================
+   SPEAK JAPANESE
+===================================================== */
+
+function speakJapanese() {
+
+    if (
+        !cards ||
+        !cards.length
+    ) {
+        return;
+    }
+
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        alert(
+            "Your browser does not support speech synthesis."
+        );
+
+        return;
+    }
+
+
+    /*
+       Respect pronunciation setting
+    */
+
+    const enabled =
+        localStorage.getItem("pronunciation");
+
+
+    if (enabled === "false") {
+
+        alert(
+            "Japanese pronunciation is disabled in your settings."
+        );
+
+        return;
+    }
+
+
+    const text =
+        String(
+            cards[currentIndex].japanese || ""
+        ).trim();
+
+
+    if (!text) {
+        return;
+    }
+
+
+    /*
+       Stop previous speech
+    */
+
+    window.speechSynthesis.cancel();
+
+
+    /*
+       Create speech
+    */
+
+    const speech =
+        new SpeechSynthesisUtterance(text);
+
+
+    speech.lang = "ja-JP";
+
+    speech.rate = 0.8;
+
+    speech.pitch = 1;
+
+
+    /*
+       Try to select Japanese voice
+    */
+
+    const japaneseVoice =
+        getJapaneseVoice();
+
+
+    if (japaneseVoice) {
+
+        speech.voice =
+            japaneseVoice;
+
+    }
+
+
+    /*
+       Speaker UI
+    */
+
+    speaker.classList.add("speaking");
+
+    speaker.innerHTML =
+        '<i class="fa-solid fa-volume-high"></i>';
+
+
+    /*
+       Speech events
+    */
+
+    speech.onend = function () {
+
+        speaker.classList.remove("speaking");
+
+    };
+
+
+    speech.onerror = function (event) {
+
+        console.error(
+            "Japanese speech error:",
+            event
+        );
+
+
+        speaker.classList.remove("speaking");
+
+
+        speaker.innerHTML =
+            '<i class="fa-solid fa-volume-high"></i>';
+
+
+        alert(
+            "Japanese pronunciation could not be played. " +
+            "Please check whether your browser has a Japanese voice installed."
+        );
+
+    };
+
+
+    /*
+       Speak
+    */
+
+    window.speechSynthesis.speak(
+        speech
+    );
+}
+
+
+/* =====================================================
+   VOICE INITIALIZATION
+===================================================== */
+
+if ("speechSynthesis" in window) {
+
+    window.speechSynthesis.onvoiceschanged =
+        function () {
+
+            window.speechSynthesis.getVoices();
+
+        };
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+speaker.addEventListener(
+    "click",
+    speakJapanese
+);
+
+
+previousBtn.addEventListener(
+    "click",
+    previousCard
+);
+
+
+nextBtn.addEventListener(
+    "click",
+    nextCard
+);
+
+
+/* =====================================================
+   INITIAL CARD
+===================================================== */
+
+showCard();
+
+</script>
+
+
+<!-- =====================================================
+     DARK MODE
+====================================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}">
+</script>
+
+
+
+
+
+</body>
+
+</html>

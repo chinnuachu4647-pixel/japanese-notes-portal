@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JLPT N1 Practice</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: transparent !important;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #302b43;
+        }
+
+        .n1-page {
+            width: min(800px, calc(100% - 30px));
+            margin: 0 auto;
+            padding: 35px 0 70px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .n1-card {
+            padding: 32px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.94),
+                    rgba(249,246,255,.87)
+                );
+
+            border: 1px solid rgba(255,255,255,.9);
+            border-radius: 24px;
+
+            box-shadow:
+                0 16px 42px rgba(65,50,110,.11);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .n1-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+
+            border-bottom: 1px solid #eeeaf5;
+
+            color: #817a91;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .n1-progress-text {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .n1-progress-bar {
+            width: 240px;
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 999px;
+            background: #ebe7f4;
+        }
+
+        .n1-progress-fill {
+            width: 0%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6258ce,
+                    #c56c91
+                );
+
+            transition: width .25s ease;
+        }
+
+        .n1-score {
+            white-space: nowrap;
+            color: #6258ce;
+        }
+
+        .n1-category {
+            display: inline-flex;
+            align-items: center;
+
+            min-height: 30px;
+
+            padding: 0 12px;
+            margin-bottom: 10px;
+
+            border-radius: 999px;
+
+            background: #f0edff;
+            border: 1px solid #e1dcf3;
+
+            color: #6258ce;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .n1-title {
+            margin: 0;
+
+            color: #302b43;
+
+            font-size: 30px;
+            line-height: 1.2;
+        }
+
+        .n1-subtitle {
+            margin: 7px 0 22px;
+
+            color: #77718e;
+
+            font-size: 14px;
+        }
+
+        .n1-question-row {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-top: 5px;
+        }
+
+        .n1-question {
+            flex: 1;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f2efff,
+                    #faf8ff
+                );
+
+            border: 1px solid #e5e0f0;
+            border-radius: 15px;
+
+            color: #302b43;
+
+            font-size: 21px;
+            font-weight: 700;
+
+            line-height: 1.6;
+        }
+
+        .n1-english {
+            margin-top: 10px;
+
+            color: #817a91;
+
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .n1-speaker {
+            width: 46px;
+            height: 46px;
+
+            flex-shrink: 0;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+
+            border: 1px solid #ddd8eb;
+            border-radius: 12px;
+
+            background: #f2effb;
+            color: #6258ce;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                background .2s ease,
+                color .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .n1-speaker:hover {
+            background: #e8e4f7;
+            color: #4e45b8;
+
+            transform: scale(1.05);
+
+            box-shadow:
+                0 7px 18px rgba(98,88,206,.15);
+        }
+
+        .n1-speaker:active {
+            transform: scale(.96);
+        }
+
+        .n1-speaker.speaking {
+            background: #6258ce;
+            border-color: #6258ce;
+            color: white;
+        }
+
+        .n1-options {
+            margin-top: 18px;
+        }
+
+        .n1-option {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 15px;
+
+            margin-top: 10px;
+
+            background: rgba(255,255,255,.75);
+
+            border: 1px solid #e6e1ef;
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            color: #504a5e;
+
+            transition:
+                background .2s ease,
+                border-color .2s ease,
+                transform .2s ease;
+        }
+
+        .n1-option:hover {
+            border-color: rgba(108,99,217,.35);
+            background: #faf8ff;
+            transform: translateY(-1px);
+        }
+
+        .n1-option input {
+            accent-color: #6258ce;
+        }
+
+        .n1-submit {
+            width: 100%;
+
+            min-height: 47px;
+
+            margin-top: 22px;
+
+            border: none;
+            border-radius: 11px;
+
+            background: #6258ce;
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background .2s ease,
+                transform .2s ease;
+        }
+
+        .n1-submit:hover {
+            background: #4e45b8;
+            transform: translateY(-1px);
+        }
+
+        .n1-back {
+            display: inline-flex;
+
+            margin-top: 20px;
+
+            padding: 11px 15px;
+
+            background: #f2effb;
+
+            border: 1px solid #e1dcec;
+
+            border-radius: 10px;
+
+            color: #6258ce;
+
+            text-decoration: none;
+
+            font-weight: 700;
+        }
+
+        .n1-back:hover {
+            background: #e8e4f7;
+            color: #4e45b8;
+        }
+
+        body.dark-mode .n1-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,.95),
+                    rgba(37,36,54,.91)
+                );
+
+            border-color: rgba(255,255,255,.08);
+
+            box-shadow:
+                0 18px 45px rgba(0,0,0,.25);
+        }
+
+        body.dark-mode .n1-title {
+            color: #f5f2ff;
+        }
+
+        body.dark-mode .n1-subtitle {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .n1-top {
+            border-bottom-color: #3b3e52;
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .n1-progress-bar {
+            background: #303246;
+        }
+
+        body.dark-mode .n1-score {
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .n1-category {
+            background: #302e50;
+            border-color: #41445b;
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .n1-question {
+            background:
+                linear-gradient(
+                    135deg,
+                    #302e50,
+                    #252838
+                );
+
+            border-color: #41445b;
+            color: #f0edf8;
+        }
+
+        body.dark-mode .n1-english {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .n1-option {
+            background: rgba(37,40,56,.85);
+            border-color: #41445b;
+            color: #ddd9e8;
+        }
+
+        body.dark-mode .n1-option:hover {
+            background: #303348;
+            border-color: #6258ce;
+        }
+
+        body.dark-mode .n1-speaker {
+            background: #302e50;
+            border-color: #41445b;
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .n1-speaker:hover {
+            background: #3a3c52;
+            color: #c0baff;
+        }
+
+        body.dark-mode .n1-speaker.speaking {
+            background: #766de0;
+            border-color: #766de0;
+            color: white;
+        }
+
+        body.dark-mode .n1-back {
+            background: #252838;
+            border-color: #41445b;
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .n1-back:hover {
+            background: #303348;
+            color: #c0baff;
+        }
+
+        @media (max-width: 600px) {
+
+            .n1-page {
+                width: calc(100% - 24px);
+                padding-top: 22px;
+            }
+
+            .n1-card {
+                padding: 24px 18px;
+            }
+
+            .n1-title {
+                font-size: 25px;
+            }
+
+            .n1-top {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .n1-progress-bar {
+                width: 100%;
+            }
+
+            .n1-score {
+                align-self: flex-end;
+            }
+
+            .n1-question-row {
+                align-items: flex-start;
+            }
+
+            .n1-question {
+                font-size: 18px;
+                padding: 17px;
+            }
+
+            .n1-speaker {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+
+            .n1-option {
+                padding: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<main class="n1-page">
+
+    <section class="n1-card">
+
+        <div class="n1-top">
+
+            <div>
+
+                <span class="n1-progress-text">
+                    Question {{ question_number }}
+                    /
+                    {{ total_questions }}
+                </span>
+
+                <div class="n1-progress-bar">
+
+                    <div
+                        class="n1-progress-fill"
+                        id="n1ProgressFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            <span class="n1-score">
+                Score: {{ score }}
+            </span>
+
+        </div>
+
+        <div class="n1-category">
+            {{ question.category }}
+        </div>
+
+        <h1 class="n1-title">
+            🎓 JLPT N1 Practice
+        </h1>
+
+        <p class="n1-subtitle">
+            Expert-level Japanese practice — {{ username }}
+        </p>
+
+        <div class="n1-question-row">
+
+            <div class="n1-question">
+                {{ question.question }}
+            </div>
+
+            <button
+                type="button"
+                class="n1-speaker"
+                id="n1Speaker"
+                title="Listen to Japanese"
+                aria-label="Listen to Japanese"
+            >
+                🔊
+            </button>
+
+        </div>
+
+        <div class="n1-english">
+            {{ question.english }}
+        </div>
+
+        <form method="POST">
+
+            <div class="n1-options">
+
+                {% for option in question.options %}
+
+                    <label class="n1-option">
+
+                        <input
+                            type="radio"
+                            name="answer"
+                            value="{{ option }}"
+                            required
+                        >
+
+                        <span>
+                            {{ option }}
+                        </span>
+
+                    </label>
+
+                {% endfor %}
+
+            </div>
+
+            <button
+                type="submit"
+                class="n1-submit"
+            >
+                Check Answer →
+            </button>
+
+        </form>
+
+        <a
+            href="{{ url_for('jlpt') }}"
+            class="n1-back"
+        >
+            ← Back to JLPT
+        </a>
+
+    </section>
+
+</main>
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const progressFill =
+            document.getElementById("n1ProgressFill");
+
+        const questionNumber =
+            Number("{{ question_number }}");
+
+        const totalQuestions =
+            Number("{{ total_questions }}");
+
+        if (
+            progressFill &&
+            totalQuestions > 0
+        ) {
+
+            const percentage =
+                (questionNumber / totalQuestions) * 100;
+
+            progressFill.style.width =
+                percentage + "%";
+        }
+
+    }
+);
+
+</script>
+
+<script id="n1-question-data" type="application/json">
+{{ question.question | tojson }}
+</script>
+
+<script>
+
+const n1Speaker =
+    document.getElementById("n1Speaker");
+
+const japaneseQuestion =
+    JSON.parse(
+        document.getElementById(
+            "n1-question-data"
+        ).textContent
+    );
+
+function getJapaneseVoice() {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+        return null;
+    }
+
+    const voices =
+        window.speechSynthesis.getVoices();
+
+    return voices.find(
+        function (voice) {
+
+            return (
+                voice.lang &&
+                voice.lang
+                    .toLowerCase()
+                    .startsWith("ja")
+            );
+
+        }
+    ) || null;
+}
+
+function speakN1Question() {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        alert(
+            "Your browser does not support speech synthesis."
+        );
+
+        return;
+    }
+
+    const text =
+        String(
+            japaneseQuestion || ""
+        ).trim();
+
+    if (!text) {
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const speech =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+    speech.lang = "ja-JP";
+
+    speech.rate = 0.8;
+
+    speech.pitch = 1;
+
+    const japaneseVoice =
+        getJapaneseVoice();
+
+    if (japaneseVoice) {
+        speech.voice =
+            japaneseVoice;
+    }
+
+    n1Speaker.classList.add(
+        "speaking"
+    );
+
+    speech.onend =
+        function () {
+
+            n1Speaker.classList.remove(
+                "speaking"
+            );
+
+        };
+
+    speech.onerror =
+        function (event) {
+
+            console.error(
+                "N1 speech error:",
+                event
+            );
+
+            n1Speaker.classList.remove(
+                "speaking"
+            );
+
+        };
+
+    window.speechSynthesis.speak(
+        speech
+    );
+}
+
+if (n1Speaker) {
+
+    n1Speaker.addEventListener(
+        "click",
+        speakN1Question
+    );
+
+}
+
+if (
+    "speechSynthesis" in window
+) {
+
+    window.speechSynthesis.onvoiceschanged =
+        function () {
+
+            window.speechSynthesis.getVoices();
+
+        };
+
+}
+
+</script>
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}"
+></script>
+
+</body>
+
+</html>

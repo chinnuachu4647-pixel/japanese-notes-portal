@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ category }} Certificate</title>
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         JAPANESE PORTAL BACKGROUND
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body class="internal-page">
+
+
+    <div class="certificate-page">
+
+
+        <div class="certificate-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <div class="certificate-header">
+
+
+                <div class="certificate-icon">
+                    🎓
+                </div>
+
+
+                <h1>
+                    Certificate of Completion
+                </h1>
+
+
+                <p>
+                    Japanese Learning Portal
+                </p>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 CERTIFICATE BODY
+            ================================================== -->
+
+            <div class="certificate-body">
+
+
+                <p>
+                    Congratulations!
+                </p>
+
+
+                <h2>
+                    {{ session["user"] }}
+                </h2>
+
+
+                <h3>
+                    {{ category }}
+                </h3>
+
+
+                <p>
+                    You have successfully completed all
+                    {{ certificate_progress.total }}
+                    {{ category }} lessons.
+                </p>
+
+
+                <p>
+                    You have completed
+                    {{ certificate_progress.completed }}
+                    /
+                    {{ certificate_progress.total }}
+                    lessons.
+                </p>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="certificate-footer">
+
+
+                <!-- TEAM SIGNATURE -->
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/team_signature.png'
+                    ) }}"
+                    alt="A & D Signature"
+                    class="team-signature"
+                >
+
+
+                <p>
+                    Certificate of successful completion
+                </p>
+
+
+                <!-- DOWNLOAD -->
+
+                <a
+                    href="{{ url_for(
+                        'download_certificate',
+                        category=category
+                    ) }}"
+                    class="certificate-btn"
+                >
+
+                    <i class="fa-solid fa-download"></i>
+
+                    Download Certificate
+
+                </a>
+
+
+                <!-- BACK -->
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="certificate-btn"
+                >
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='js/darkmode.js') }}">
+    </script>
+
+
+    <script
+        src="{{ url_for('static', filename='js/pronunciation.js') }}">
+    </script>
+
+
+</body>
+
+</html>

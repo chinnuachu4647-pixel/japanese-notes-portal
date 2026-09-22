@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+.env/
+.env.*
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite temporary/backup files
+*.db-journal
+*.db-wal
+*.db-shm
+database_backup_*.db
+
+# Generated certificates
+certificates/*.pdf
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

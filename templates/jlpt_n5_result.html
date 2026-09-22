@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JLPT N5 Result</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: transparent !important;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #302b43;
+        }
+
+        .result-page {
+            width: min(900px, calc(100% - 30px));
+            margin: 0 auto;
+            padding: 35px 0 70px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .result-card {
+            padding: 34px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.95),
+                    rgba(249,246,255,.89)
+                );
+
+            border:
+                1px solid rgba(255,255,255,.9);
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 18px 45px rgba(65,50,110,.12);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .result-top {
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        .result-card h1 {
+            margin: 0;
+            color: #302b43;
+            font-size: 30px;
+        }
+
+        .result-user {
+            margin-top: 8px;
+            color: #77718e;
+            font-size: 14px;
+        }
+
+        .score-box {
+            margin: 26px auto;
+            padding: 24px;
+            max-width: 360px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f2efff,
+                    #faf8ff
+                );
+
+            border:
+                1px solid #e5e0f0;
+
+            border-radius: 18px;
+
+            text-align: center;
+        }
+
+        .score {
+            color: #6258ce;
+            font-size: 42px;
+            font-weight: 800;
+        }
+
+        .percentage {
+            margin-top: 6px;
+            color: #4d9b77;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .breakdown-title {
+            margin: 30px 0 14px;
+            color: #302b43;
+            font-size: 20px;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .breakdown-item {
+            padding: 16px;
+
+            background:
+                rgba(255,255,255,.72);
+
+            border:
+                1px solid #e6e1ef;
+
+            border-radius: 14px;
+        }
+
+        .breakdown-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+
+            margin-bottom: 9px;
+
+            color: #504a5e;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .breakdown-bar {
+            height: 8px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #ebe7f4;
+        }
+
+        .breakdown-fill {
+            height: 100%;
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6258ce,
+                    #c56c91
+                );
+        }
+
+        .result-message {
+            margin: 25px 0;
+            text-align: center;
+            color: #686174;
+            line-height: 1.6;
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .result-btn {
+            min-height: 44px;
+            padding: 0 17px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #6258ce;
+            color: white;
+
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .result-btn:hover {
+            background: #4e45b8;
+            color: white;
+        }
+
+        .secondary-btn {
+            background: #f2effb;
+            color: #6258ce;
+            border: 1px solid #e1dcec;
+        }
+
+        .secondary-btn:hover {
+            background: #e8e4f7;
+            color: #4e45b8;
+        }
+
+        body.dark-mode .result-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,.95),
+                    rgba(37,36,54,.91)
+                );
+
+            border-color:
+                rgba(255,255,255,.08);
+        }
+
+        body.dark-mode .result-card h1,
+        body.dark-mode .breakdown-title {
+            color: #f5f2ff;
+        }
+
+        body.dark-mode .result-user,
+        body.dark-mode .result-message {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .score-box {
+            background:
+                linear-gradient(
+                    135deg,
+                    #302e50,
+                    #292c40
+                );
+
+            border-color: #41445b;
+        }
+
+        body.dark-mode .breakdown-item {
+            background: rgba(37,40,56,.82);
+            border-color: #41445b;
+        }
+
+        body.dark-mode .breakdown-header {
+            color: #d4d0df;
+        }
+
+        body.dark-mode .breakdown-bar {
+            background: #303246;
+        }
+
+        body.dark-mode .secondary-btn {
+            background: #252838;
+            border-color: #41445b;
+            color: #aaa3ff;
+        }
+
+        @media (max-width: 600px) {
+
+            .result-page {
+                width: calc(100% - 24px);
+                padding-top: 22px;
+            }
+
+            .result-card {
+                padding: 25px 18px;
+            }
+
+            .breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-btn {
+                width: 100%;
+            }
+
+        }
+
+        .review-section {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.review-title {
+    margin: 0 0 20px;
+    color: #302b43;
+    font-size: 25px;
+    text-align: center;
+}
+
+.review-card {
+    margin-bottom: 18px;
+    padding: 22px;
+    background: linear-gradient(
+        135deg,
+        rgba(250,248,255,.96),
+        rgba(255,249,253,.94)
+    );
+    border: 1px solid #e1dcef;
+    border-radius: 17px;
+}
+
+.review-number {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6258ce;
+}
+
+.review-category {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #eeeaff;
+    color: #6258ce;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.review-question {
+    margin-top: 15px;
+    color: #302b43;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.review-english {
+    margin-top: 6px;
+    color: #77718e;
+    font-size: 14px;
+}
+
+.review-status {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.review-status.correct {
+    background: #e8f7ee;
+    color: #2f8f5b;
+}
+
+.review-status.incorrect {
+    background: #fdeaea;
+    color: #c84b4b;
+}
+
+.review-answer-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    background: #f5f2fb;
+    color: #514b61;
+    font-size: 14px;
+}
+
+.review-answer-row strong {
+    min-width: 120px;
+}
+
+.review-answer-row.correct-answer {
+    background: #eeeaff;
+    color: #5146b8;
+}
+
+/* DARK MODE */
+
+body.dark-mode .review-title {
+    color: #f5f2ff;
+}
+
+body.dark-mode .review-card {
+    background: #252838;
+    border-color: #41445b;
+}
+
+body.dark-mode .review-question {
+    color: #f5f2ff;
+}
+
+body.dark-mode .review-english {
+    color: #aaa6bb;
+}
+
+body.dark-mode .review-answer-row {
+    background: #303344;
+    color: #d4d0df;
+}
+
+body.dark-mode .review-answer-row.correct-answer {
+    background: #343252;
+    color: #aaa3ff;
+}
+
+@media (max-width: 600px) {
+
+    .review-section {
+        margin-top: 30px;
+    }
+
+    .review-card {
+        padding: 18px;
+    }
+
+    .review-question {
+        font-size: 17px;
+    }
+
+    .review-answer-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .review-answer-row strong {
+        min-width: auto;
+    }
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+<main class="result-page">
+
+    <section class="result-card">
+
+        <div class="result-top">
+
+            {% if percentage >= 90 %}
+
+                <div class="result-icon">🏆</div>
+
+            {% elif percentage >= 70 %}
+
+                <div class="result-icon">🎉</div>
+
+            {% elif percentage >= 50 %}
+
+                <div class="result-icon">💪</div>
+
+            {% else %}
+
+                <div class="result-icon">📚</div>
+
+            {% endif %}
+
+            <h1>
+                N5 Practice Complete!
+            </h1>
+
+            <div class="result-user">
+                Great work, {{ username }} 🇯🇵
+            </div>
+
+        </div>
+
+
+        <div class="score-box">
+
+            <div class="score">
+                {{ score }} / {{ total }}
+            </div>
+
+            <div class="percentage">
+                {{ percentage }}%
+            </div>
+
+        </div>
+
+
+        <h2 class="breakdown-title">
+            📊 Category Breakdown
+        </h2>
+
+
+        <div class="breakdown-grid">
+
+
+            {% set category_totals = {
+                "Vocabulary": 6,
+                "Hiragana": 5,
+                "Katakana": 5,
+                "Grammar": 6,
+                "Kanji": 5,
+                "Reading": 5
+            } %}
+
+
+            {% for category, total_count in category_totals.items() %}
+
+                {% set correct =
+                    category_scores.get(category, 0)
+                %}
+
+                {% set percent =
+                    (correct / total_count * 100)
+                    | round
+                %}
+
+
+                <div class="breakdown-item">
+
+                    <div class="breakdown-header">
+
+                        <span>
+                            {{ category }}
+                        </span>
+
+                        <span>
+                            {{ correct }} / {{ total_count }}
+                        </span>
+
+                    </div>
+
+
+                    <div
+    class="breakdown-bar"
+    data-percent="{{ percent }}"
+>
+
+    <div class="breakdown-fill"></div>
+
+</div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+<section class="review-section">
+
+    <h2 class="review-title">
+        📝 Answer Review
+    </h2>
+
+    {% for key, item in review.items() %}
+
+        <div class="review-card">
+
+            <div class="review-number">
+                Question {{ loop.index }}
+            </div>
+
+            <div class="review-category">
+                {{ item.category }}
+            </div>
+
+            <div class="review-question">
+                {{ item.question }}
+            </div>
+
+            <div class="review-english">
+                {{ item.english }}
+            </div>
+
+            {% if item.your_answer == item.correct_answer %}
+
+                <div class="review-status correct">
+                    ✅ Correct
+                </div>
+
+            {% else %}
+
+                <div class="review-status incorrect">
+                    ❌ Incorrect
+                </div>
+
+            {% endif %}
+
+            <div class="review-answer-row">
+                <strong>Your answer:</strong>
+                <span>
+                    {{ item.your_answer if item.your_answer else "No answer" }}
+                </span>
+            </div>
+
+            <div class="review-answer-row correct-answer">
+                <strong>Correct answer:</strong>
+                <span>
+                    {{ item.correct_answer }}
+                </span>
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</section>
+        <div class="result-message">
+
+            {% if percentage >= 90 %}
+
+                🌟 Excellent! Your N5 foundation is very strong.
+
+            {% elif percentage >= 70 %}
+
+                👍 Great job! Keep practicing to strengthen your N5 skills.
+
+            {% elif percentage >= 50 %}
+
+                😊 Good effort! Review the weaker categories and try again.
+
+            {% else %}
+
+                💪 Keep going! Review your N5 basics and practice again.
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="result-actions">
+
+            <a
+                href="/jlpt/n5"
+                class="result-btn"
+            >
+                🔄 Try N5 Again
+            </a>
+
+
+            <a
+                href="/jlpt"
+                class="result-btn secondary-btn"
+            >
+                🎓 JLPT Levels
+            </a>
+
+
+            <a
+                href="/learning_hub"
+                class="result-btn secondary-btn"
+            >
+                📚 Learning Hub
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+<script>
+
+document
+    .querySelectorAll(".breakdown-bar")
+    .forEach(function (bar) {
+
+        const percent =
+            Number(bar.dataset.percent || 0);
+
+        const fill =
+            bar.querySelector(".breakdown-fill");
+
+        if (fill) {
+
+            fill.style.width =
+                Math.max(
+                    0,
+                    Math.min(100, percent)
+                ) + "%";
+        }
+
+    });
+
+</script>
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}">
+</script>
+
+</body>
+
+</html>

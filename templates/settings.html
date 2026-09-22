@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Settings | Japanese Learning Portal</title>
+
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <!-- Settings CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/settings.css') }}"
+    >
+
+    <!-- App Background -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           JLPT DEMO ACCESS
+        ====================================================== */
+
+        .jlpt-demo-card {
+            margin-top: 24px;
+        }
+
+        .jlpt-demo-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .jlpt-demo-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 36px;
+            padding: 0 12px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .jlpt-demo-status.locked {
+            background: #f1eef7;
+            color: #77718a;
+        }
+
+        .jlpt-demo-status.unlocked {
+            background: #e9f8ef;
+            color: #27834a;
+        }
+
+        .jlpt-demo-button {
+            min-height: 38px;
+            padding: 0 14px;
+
+            border: none;
+            border-radius: 9px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                background .2s ease;
+        }
+
+        .jlpt-demo-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .jlpt-demo-button.unlock {
+            background: #6258ce;
+            color: white;
+        }
+
+        .jlpt-demo-button.unlock:hover {
+            background: #5148bd;
+        }
+
+        .jlpt-demo-button.lock {
+            background: #eeeaf5;
+            color: #6258ce;
+        }
+
+        .jlpt-demo-button.lock:hover {
+            background: #e3deed;
+        }
+
+        .jlpt-key-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-top: 15px;
+            padding-top: 15px;
+
+            border-top: 1px solid #e7e2ef;
+        }
+
+        .jlpt-key-box input {
+            flex: 1;
+
+            min-height: 40px;
+
+            padding: 0 12px;
+
+            border: 1px solid #ddd7eb;
+            border-radius: 9px;
+
+            background: white;
+            color: #302b43;
+
+            font-size: 12px;
+
+            outline: none;
+        }
+
+        .jlpt-key-box input:focus {
+            border-color: #6258ce;
+
+            box-shadow:
+                0 0 0 3px rgba(98,88,206,.10);
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        body.dark-mode .jlpt-demo-status.locked {
+            background: #292b3d;
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .jlpt-demo-status.unlocked {
+            background: #203a2b;
+            color: #72c58e;
+        }
+
+        body.dark-mode .jlpt-demo-button.lock {
+            background: #303246;
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .jlpt-demo-button.lock:hover {
+            background: #383a50;
+        }
+
+        body.dark-mode .jlpt-key-box {
+            border-top-color: #41445b;
+        }
+
+        body.dark-mode .jlpt-key-box input {
+            background: #252638;
+            border-color: #41445b;
+            color: #f5f2ff;
+        }
+
+        body.dark-mode .jlpt-key-box input::placeholder {
+            color: #858094;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .jlpt-demo-control {
+                width: 100%;
+                align-items: stretch;
+            }
+
+            .jlpt-demo-status,
+            .jlpt-demo-button {
+                width: 100%;
+            }
+
+            .jlpt-key-box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .jlpt-key-box input,
+            .jlpt-key-box button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="internal-page">
+
+
+<!-- =================================================
+     HEADER
+================================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <a
+            href="/dashboard"
+            class="back-btn"
+            title="Back to Dashboard"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+        </a>
+
+
+        <div class="title">
+
+            <h1>
+                Settings
+            </h1>
+
+            <span>
+                Customize your Japanese learning experience ⚙️
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+        <a
+            href="/profile"
+            class="icon-btn"
+            title="Profile"
+        >
+
+            <i class="fa-solid fa-user"></i>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =================================================
+     SETTINGS CONTAINER
+================================================== -->
+
+<main class="settings-container">
+
+
+<!-- =================================================
+     PAGE HEADING
+================================================== -->
+
+<div class="settings-heading">
+
+    <div class="settings-heading-icon">
+        ⚙️
+    </div>
+
+    <div>
+
+        <h2>
+            Settings
+        </h2>
+
+        <p>
+            Manage your account and learning preferences.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =================================================
+     ACCOUNT SETTINGS
+================================================== -->
+
+<section class="settings-card">
+
+    <div class="settings-card-title">
+
+        <span>
+            👤
+        </span>
+
+        <div>
+
+            <h3>
+                Account Settings
+            </h3>
+
+            <p>
+                Manage your personal account information.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROFILE -->
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Profile
+            </strong>
+
+            <p>
+                View and manage your profile information.
+            </p>
+
+        </div>
+
+
+        <a
+            href="/profile"
+            class="settings-btn"
+        >
+
+            View Profile
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Change Password
+            </strong>
+
+            <p>
+                Update your account password.
+            </p>
+
+        </div>
+
+
+       <a
+    href="{{ url_for('change_password') }}"
+    class="settings-btn"
+>
+    Change
+    <i class="fa-solid fa-lock"></i>
+</a>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     APPEARANCE
+================================================== -->
+
+<section class="settings-card">
+
+    <div class="settings-card-title">
+
+        <span>
+            🎨
+        </span>
+
+        <div>
+
+            <h3>
+                Appearance
+            </h3>
+
+            <p>
+                Choose how the portal looks.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Theme
+            </strong>
+
+            <p>
+                Choose your preferred appearance.
+            </p>
+
+        </div>
+
+
+        <select
+            id="themeSelect"
+            class="settings-select"
+        >
+
+            <option value="default">
+                🌸 Default
+            </option>
+
+            <option value="light">
+                ☀️ Light
+            </option>
+
+            <option value="dark">
+                🌙 Dark
+            </option>
+
+        </select>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     LEARNING PREFERENCES
+================================================== -->
+
+<section class="settings-card">
+
+    <div class="settings-card-title">
+
+        <span>
+            📚
+        </span>
+
+        <div>
+
+            <h3>
+                Learning Preferences
+            </h3>
+
+            <p>
+                Customize your Japanese learning experience.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRONUNCIATION -->
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Pronunciation
+            </strong>
+
+            <p>
+                Enable pronunciation buttons throughout the portal.
+            </p>
+
+        </div>
+
+
+        <label class="switch">
+
+            <input
+                type="checkbox"
+                id="pronunciationToggle"
+            >
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+
+    <!-- ENGLISH DISPLAY -->
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Japanese + English
+            </strong>
+
+            <p>
+                Show English explanations together with Japanese.
+            </p>
+
+        </div>
+
+
+        <label class="switch">
+
+            <input
+                type="checkbox"
+                id="englishToggle"
+                checked
+            >
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     NOTIFICATIONS
+================================================== -->
+
+<section class="settings-card">
+
+    <div class="settings-card-title">
+
+        <span>
+            🔔
+        </span>
+
+        <div>
+
+            <h3>
+                Notifications
+            </h3>
+
+            <p>
+                Control your learning reminders.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Learning Reminders
+            </strong>
+
+            <p>
+                Receive reminders to continue learning Japanese.
+            </p>
+
+        </div>
+
+
+        <label class="switch">
+
+            <input
+                type="checkbox"
+                id="notificationToggle"
+                checked
+            >
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     HELP & SUPPORT
+================================================== -->
+
+<section class="settings-card">
+
+    <div class="settings-card-title">
+
+        <span>
+            🆘
+        </span>
+
+        <div>
+
+            <h3>
+                Help & Support
+            </h3>
+
+            <p>
+                Need help with the Japanese Learning Portal?
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Help Desk
+            </strong>
+
+            <p>
+                Submit a support request and track your requests.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('help_desk') }}"
+            class="settings-btn"
+        >
+
+            Open Help Desk
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     JLPT DEMO ACCESS
+================================================== -->
+
+{% if session.get('email', '').strip().lower() == 'chinnuachu4647@gmail.com' %}
+
+<section class="settings-card jlpt-demo-card">
+
+    <div class="settings-card-title">
+
+        <span>
+            🎓
+        </span>
+
+        <div>
+
+            <h3>
+                JLPT Demo Access
+            </h3>
+
+            <p>
+                Demo access for presenting the JLPT progression.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                JLPT Demo Mode
+            </strong>
+
+            <p>
+                Unlock N4, N3, N2 and N1 without completing
+                the 80% progression requirement.
+            </p>
+
+        </div>
+
+
+        <div class="jlpt-demo-control">
+
+            {% if demo_unlocked %}
+
+                <span class="jlpt-demo-status unlocked">
+
+                    🔓 Unlocked
+
+                </span>
+
+                <button
+                    type="button"
+                    onclick="lockJLPTDemo()"
+                    class="jlpt-demo-button lock"
+                >
+
+                    🔒 Lock
+
+                </button>
+
+            {% else %}
+
+                <span class="jlpt-demo-status locked">
+
+                    🔒 Locked
+
+                </span>
+
+                <button
+                    type="button"
+                    onclick="showJLPTKeyBox()"
+                    class="jlpt-demo-button unlock"
+                >
+
+                    🔑 Unlock
+
+                </button>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    {% if not demo_unlocked %}
+
+    <div
+        id="jlptKeyBox"
+        class="jlpt-key-box"
+        style="display: none;"
+    >
+
+        <input
+            type="password"
+            id="jlptDemoKey"
+            placeholder="Enter JLPT unlock key"
+        >
+
+        <button
+            type="button"
+            onclick="unlockJLPTDemo()"
+            class="jlpt-demo-button unlock"
+        >
+
+            Confirm Unlock
+
+        </button>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endif %}
+
+
+<!-- =================================================
+     SECURITY
+================================================== -->
+
+<section class="settings-card">
+
+    <div class="settings-card-title">
+
+        <span>
+            🔒
+        </span>
+
+        <div>
+
+            <h3>
+                Security
+            </h3>
+
+            <p>
+                Manage your account security.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-option">
+
+        <div>
+
+            <strong>
+                Logout
+            </strong>
+
+            <p>
+                Sign out of your Japanese Learning Portal account.
+            </p>
+
+        </div>
+
+
+        <a
+            href="/logout"
+            class="logout-btn"
+        >
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     SAVE SETTINGS
+================================================== -->
+
+<div class="settings-save-area">
+
+    <button
+        type="button"
+        class="save-settings-btn"
+        onclick="saveSettings()"
+    >
+
+        <i class="fa-solid fa-floppy-disk"></i>
+
+        Save Settings
+
+    </button>
+
+    <p id="settingsMessage"></p>
+
+</div>
+
+
+<!-- =================================================
+     BACK TO DASHBOARD
+================================================== -->
+
+<div class="settings-footer">
+
+    <a
+        href="/dashboard"
+        class="dashboard-btn"
+    >
+
+        <i class="fa-solid fa-house"></i>
+
+        Back to Dashboard
+
+    </a>
+
+</div>
+
+
+</main>
+
+
+<!-- =================================================
+     JAVASCRIPT
+================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =================================================
+       THEME
+    ================================================= */
+
+    const themeSelect =
+        document.getElementById("themeSelect");
+
+
+    const savedTheme =
+        localStorage.getItem("theme");
+
+
+    if (savedTheme) {
+
+        themeSelect.value =
+            savedTheme;
+
+        applyTheme(savedTheme);
+
+    }
+
+
+    themeSelect.addEventListener("change", function () {
+
+        const selectedTheme =
+            this.value;
+
+        localStorage.setItem(
+            "theme",
+            selectedTheme
+        );
+
+        applyTheme(selectedTheme);
+
+    });
+
+
+    /* =================================================
+       PRONUNCIATION
+    ================================================= */
+
+    const pronunciationToggle =
+        document.getElementById("pronunciationToggle");
+
+
+    const savedPronunciation =
+        localStorage.getItem("pronunciation");
+
+
+    if (savedPronunciation !== null) {
+
+        pronunciationToggle.checked =
+            savedPronunciation === "true";
+
+    }
+
+
+    pronunciationToggle.addEventListener("change", function () {
+
+        localStorage.setItem(
+            "pronunciation",
+            this.checked ? "true" : "false"
+        );
+
+    });
+
+
+    /* =================================================
+       JAPANESE + ENGLISH
+    ================================================= */
+
+    const englishToggle =
+        document.getElementById("englishToggle");
+
+
+    const savedEnglish =
+        localStorage.getItem("englishDisplay");
+
+
+    if (savedEnglish !== null) {
+
+        englishToggle.checked =
+            savedEnglish === "true";
+
+    }
+
+
+    englishToggle.addEventListener("change", function () {
+
+        localStorage.setItem(
+            "englishDisplay",
+            this.checked ? "true" : "false"
+        );
+
+    });
+
+
+    /* =================================================
+       LEARNING REMINDERS
+    ================================================= */
+
+    const notificationToggle =
+        document.getElementById("notificationToggle");
+
+
+    const savedNotifications =
+        localStorage.getItem("notifications");
+
+
+    if (savedNotifications !== null) {
+
+        notificationToggle.checked =
+            savedNotifications === "true";
+
+    }
+
+
+    notificationToggle.addEventListener("change", function () {
+
+        localStorage.setItem(
+            "notifications",
+            this.checked ? "true" : "false"
+        );
+
+    });
+
+});
+
+
+/* =====================================================
+   APPLY THEME
+===================================================== */
+
+function applyTheme(theme) {
+
+    document.body.classList.remove(
+        "dark-mode"
+    );
+
+    document.body.classList.remove(
+        "light-mode"
+    );
+
+
+    if (theme === "dark") {
+
+        document.body.classList.add(
+            "dark-mode"
+        );
+
+    }
+
+    else if (theme === "light") {
+
+        document.body.classList.add(
+            "light-mode"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE SETTINGS
+===================================================== */
+
+function saveSettings() {
+
+    const theme =
+        document.getElementById(
+            "themeSelect"
+        ).value;
+
+
+    const pronunciation =
+        document.getElementById(
+            "pronunciationToggle"
+        ).checked;
+
+
+    const english =
+        document.getElementById(
+            "englishToggle"
+        ).checked;
+
+
+    const notifications =
+        document.getElementById(
+            "notificationToggle"
+        ).checked;
+
+
+    localStorage.setItem(
+        "theme",
+        theme
+    );
+
+
+    localStorage.setItem(
+        "pronunciation",
+        pronunciation
+    );
+
+
+    localStorage.setItem(
+        "englishDisplay",
+        english
+    );
+
+
+    localStorage.setItem(
+        "notifications",
+        notifications
+    );
+
+
+    applyTheme(theme);
+
+
+    const message =
+        document.getElementById(
+            "settingsMessage"
+        );
+
+
+    message.textContent =
+        "✓ Settings saved successfully!";
+
+
+    setTimeout(function () {
+
+        message.textContent = "";
+
+    }, 3000);
+
+}
+
+
+/* =====================================================
+   SHOW JLPT KEY BOX
+===================================================== */
+
+function showJLPTKeyBox() {
+
+    const box =
+        document.getElementById(
+            "jlptKeyBox"
+        );
+
+
+    if (box) {
+
+        box.style.display =
+            "flex";
+
+    }
+
+}
+
+
+/* =====================================================
+   UNLOCK JLPT DEMO
+===================================================== */
+
+function unlockJLPTDemo() {
+
+    const key =
+        document.getElementById(
+            "jlptDemoKey"
+        ).value.trim();
+
+
+    if (!key) {
+
+        alert(
+            "Please enter the unlock key."
+        );
+
+        return;
+
+    }
+
+
+    fetch(
+        "/settings/jlpt-demo",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                key: key
+            })
+        }
+    )
+
+    .then(function (response) {
+
+        return response.json();
+
+    })
+
+    .then(function (data) {
+
+        if (data.success) {
+
+            window.location.reload();
+
+        }
+
+        else {
+
+            alert(
+                data.message ||
+                "Invalid unlock key."
+            );
+
+        }
+
+    })
+
+    .catch(function () {
+
+        alert(
+            "Unable to update JLPT Demo Mode."
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   LOCK JLPT DEMO
+===================================================== */
+
+function lockJLPTDemo() {
+
+    fetch(
+        "/settings/jlpt-demo/lock",
+        {
+            method: "POST"
+        }
+    )
+
+    .then(function (response) {
+
+        return response.json();
+
+    })
+
+    .then(function (data) {
+
+        if (data.success) {
+
+            window.location.reload();
+
+        }
+
+        else {
+
+            alert(
+                data.message ||
+                "Unable to lock JLPT Demo Mode."
+            );
+
+        }
+
+    })
+
+    .catch(function () {
+
+        alert(
+            "Unable to update JLPT Demo Mode."
+        );
+
+    });
+
+}
+
+</script>
+
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}">
+</script>
+
+<script
+    src="{{ url_for('static', filename='js/pronunciation.js') }}">
+</script>
+
+
+</body>
+
+</html>

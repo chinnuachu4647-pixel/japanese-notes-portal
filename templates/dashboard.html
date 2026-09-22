@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Japanese Learning Portal</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/app-background.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: transparent;
+        }
+
+        .dashboard-page {
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            width: 100%;
+            box-sizing: border-box;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 16px 6%;
+
+            background: rgba(255, 255, 255, 0.86);
+
+            border-bottom: 1px solid rgba(220, 216, 235, 0.8);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-left .logo {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: 14px;
+        }
+
+        .header-left .title h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+            color: #242136;
+        }
+
+        .header-left .title span {
+            display: block;
+            margin-top: 3px;
+            font-size: 12px;
+            color: #77728d;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: rgba(255, 255, 255, 0.8);
+
+            color: #6258ce;
+
+            border: 1px solid #e2deed;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            transform: translateY(-2px);
+
+            background: #f2efff;
+
+            color: #4e45b8;
+
+            box-shadow:
+                0 8px 20px rgba(98, 88, 206, 0.12);
+        }
+
+        /* =====================================================
+           NOTIFICATIONS
+        ===================================================== */
+
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+
+            top: 9px;
+            right: 9px;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #ef6b8a;
+
+            border: 2px solid white;
+        }
+
+        .notification-panel {
+            position: absolute;
+
+            top: 56px;
+            right: 0;
+
+            width: 360px;
+
+            display: none;
+
+            background: rgba(255, 255, 255, 0.98);
+
+            border: 1px solid #e4e0ee;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 20px 50px rgba(50, 45, 90, 0.18);
+
+            overflow: hidden;
+        }
+
+        .notification-panel.show {
+            display: block;
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding: 15px 16px;
+
+            border-bottom: 1px solid #eeeaf5;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+
+            font-size: 15px;
+
+            color: #29253b;
+        }
+
+        .notification-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-clear {
+            border: none;
+            background: transparent;
+
+            color: #6258ce;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            padding: 6px 7px;
+
+            border-radius: 8px;
+
+            transition: 0.2s ease;
+        }
+
+        .notification-clear:hover {
+            background: #f0edff;
+            color: #4e45b8;
+        }
+
+        .notification-close {
+            width: 30px;
+            height: 30px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            background: transparent;
+
+            font-size: 22px;
+
+            color: #77728d;
+
+            cursor: pointer;
+
+            border-radius: 8px;
+
+            transition: 0.2s ease;
+        }
+
+        .notification-close:hover {
+            background: #f4f1fa;
+            color: #4d4860;
+        }
+
+        .notification-list {
+            padding: 8px;
+
+            max-height: 360px;
+
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            transition:
+                background 0.2s ease,
+                opacity 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .notification-item:hover {
+            background: #f7f5fc;
+        }
+
+        .notification-item.removing {
+            opacity: 0;
+            transform: translateX(12px);
+        }
+
+        .notification-icon {
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #f0edff;
+
+            font-size: 18px;
+        }
+
+        .notification-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .notification-content strong {
+            display: block;
+
+            font-size: 13px;
+
+            color: #302c42;
+        }
+
+        .notification-content p {
+            margin: 4px 0 0;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            color: #77728d;
+        }
+
+        .notification-content small {
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 10px;
+
+            color: #aaa5b7;
+        }
+
+        .notification-delete {
+            width: 28px;
+            height: 28px;
+
+            flex-shrink: 0;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: transparent;
+
+            color: #9993aa;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            transition: 0.2s ease;
+        }
+
+        .notification-delete:hover {
+            background: #ffecef;
+
+            color: #e45878;
+        }
+
+        .notification-empty {
+            padding: 28px 18px;
+
+            text-align: center;
+
+            color: #858096;
+        }
+
+        .notification-empty-icon {
+            width: 48px;
+            height: 48px;
+
+            margin: 0 auto 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #f0edff;
+
+            font-size: 21px;
+        }
+
+        .notification-empty strong {
+            display: block;
+
+            font-size: 13px;
+
+            color: #4b465c;
+        }
+
+        .notification-empty p {
+            margin: 5px 0 0;
+
+            font-size: 12px;
+
+            color: #8b869a;
+        }
+
+        .notification-footer {
+            padding: 13px 18px;
+
+            background: #faf9fd;
+
+            border-top: 1px solid #eeeaf5;
+        }
+
+        .notification-footer a {
+            color: #6258ce;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+        .notification-footer a:hover {
+            color: #4e45b8;
+        }
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .dashboard-content {
+            width: min(1100px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding-top: 35px;
+        }
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
+        .welcome-section {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            padding: 35px 40px;
+
+            margin-bottom: 35px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.96),
+                    rgba(248,245,255,0.94)
+                );
+
+            border: 1px solid rgba(225,221,239,0.9);
+
+            box-shadow:
+                0 15px 45px rgba(70,60,120,0.10);
+
+            overflow: hidden;
+        }
+
+        .welcome-section::after {
+            content: "🌸";
+
+            position: absolute;
+
+            right: 30px;
+            bottom: -35px;
+
+            font-size: 150px;
+
+            opacity: 0.07;
+
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-japanese {
+            margin: 0;
+
+            font-size: 29px;
+
+            color: #29253b;
+        }
+
+        .welcome-japanese-text {
+            font-weight: 800;
+        }
+
+        .daily-japanese {
+            margin: 14px 0 5px;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            color: #6258ce;
+        }
+
+        .welcome-content > span {
+            font-size: 14px;
+
+            color: #77728d;
+        }
+
+        .welcome-decoration {
+            position: relative;
+            z-index: 2;
+
+            width: 90px;
+            height: 90px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f1edff,
+                    #fff0f5
+                );
+
+            font-size: 45px;
+        }
+
+        .pronounce-btn,
+        .welcome-pronounce-btn {
+            width: 30px;
+            height: 30px;
+
+            margin-left: 5px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #f0edff;
+
+            color: #6258ce;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .pronounce-btn:hover,
+        .welcome-pronounce-btn:hover {
+            background: #6258ce;
+
+            color: white;
+
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 14px;
+        }
+
+        .section-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #f0edff;
+
+            font-size: 18px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+
+            font-size: 20px;
+
+            color: #29253b;
+        }
+
+        .word-card,
+        .quote-card,
+        .certificate-card {
+            background: rgba(255,255,255,0.94);
+
+            border: 1px solid #e4e0ee;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 12px 35px rgba(70,60,120,0.08);
+        }
+
+        /* =====================================================
+           WORD OF THE DAY
+        ===================================================== */
+
+        .word-card {
+            padding: 28px;
+        }
+
+        .word-japanese {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 35px;
+
+            font-weight: 800;
+
+            color: #6258ce;
+        }
+
+        .word-romaji {
+            margin-top: 5px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #89849b;
+        }
+
+        .word-meaning {
+            margin-top: 14px;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+            color: #373248;
+        }
+
+        .word-example {
+            margin-top: 20px;
+
+            padding: 15px 17px;
+
+            border-radius: 13px;
+
+            background: #faf9fd;
+
+            color: #4c475d;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .word-example span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #858096;
+        }
+
+        /* =====================================================
+           QUOTE
+        ===================================================== */
+
+        .quote-card {
+            position: relative;
+
+            padding: 32px;
+
+            overflow: hidden;
+        }
+
+        .quote-mark {
+            position: absolute;
+
+            top: -15px;
+            right: 25px;
+
+            font-size: 110px;
+
+            color: #f0edff;
+
+            line-height: 1;
+        }
+
+        .quote-english {
+            position: relative;
+
+            margin: 0;
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+            line-height: 1.6;
+
+            color: #393449;
+        }
+
+        .quote-japanese {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 5px;
+
+            margin: 18px 0 7px;
+
+            font-size: 17px;
+
+            color: #6258ce;
+
+            font-weight: 700;
+        }
+
+        .quote-card > span {
+            font-size: 13px;
+
+            color: #888399;
+        }
+
+        /* =====================================================
+           READY TO LEARN
+        ===================================================== */
+
+        .ready-section {
+            margin-bottom: 30px;
+        }
+
+        .ready-card {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 28px 30px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6258ce,
+                    #766de0
+                );
+
+            color: white;
+
+            box-shadow:
+                0 15px 35px rgba(98,88,206,0.24);
+        }
+
+        .ready-icon {
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 16px;
+
+            background: rgba(255,255,255,0.16);
+
+            font-size: 25px;
+        }
+
+        .ready-content {
+            flex: 1;
+        }
+
+        .ready-content h2 {
+            margin: 0;
+
+            font-size: 21px;
+        }
+
+        .ready-content p {
+            margin: 5px 0 0;
+
+            font-size: 13px;
+
+            opacity: 0.85;
+        }
+
+        .start-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 13px 19px;
+
+            border-radius: 12px;
+
+            background: white;
+
+            color: #6258ce;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* =====================================================
+           CERTIFICATES
+        ===================================================== */
+
+        .certificate-dashboard-card {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 25px;
+
+            background: rgba(255,255,255,0.94);
+
+            border: 1px solid #e4e0ee;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 12px 35px rgba(70,60,120,0.08);
+        }
+
+        .certificate-dashboard-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 15px;
+
+            background: #fff1e8;
+
+            font-size: 27px;
+        }
+
+        .certificate-dashboard-content {
+            flex: 1;
+        }
+
+        .certificate-dashboard-content h2 {
+            margin: 0;
+
+            font-size: 19px;
+
+            color: #302c42;
+        }
+
+        .certificate-dashboard-content p {
+            margin: 6px 0 14px;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            color: #858096;
+        }
+
+        .certificate-dashboard-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 11px 15px;
+
+            border-radius: 10px;
+
+            background: #f0edff;
+
+            color: #6258ce;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+        .certificate-dashboard-btn:hover {
+            background: #6258ce;
+
+            color: white;
+
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .dashboard-footer {
+            text-align: center;
+
+            padding: 25px 10px;
+
+            color: #858096;
+
+            font-size: 13px;
+        }
+
+        .dashboard-footer span {
+            color: #6258ce;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        body.dark-mode .header {
+            background: rgba(29,31,45,0.88);
+
+            border-color: #3b3e52;
+        }
+
+        body.dark-mode .header-left .title h1,
+        body.dark-mode .section-title h2,
+        body.dark-mode .welcome-japanese,
+        body.dark-mode .word-meaning,
+        body.dark-mode .quote-english,
+        body.dark-mode .certificate-dashboard-content h2 {
+            color: #f7f5ff;
+        }
+
+        body.dark-mode .header-left .title span,
+        body.dark-mode .welcome-content > span,
+        body.dark-mode .word-romaji,
+        body.dark-mode .word-example,
+        body.dark-mode .word-example span,
+        body.dark-mode .quote-card > span,
+        body.dark-mode .certificate-dashboard-content p,
+        body.dark-mode .dashboard-footer {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .welcome-section,
+        body.dark-mode .word-card,
+        body.dark-mode .quote-card,
+        body.dark-mode .certificate-dashboard-card {
+            background: rgba(30,32,46,0.94);
+
+            border-color: #3b3e52;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.22);
+        }
+
+        body.dark-mode .word-example {
+            background: #252838;
+        }
+
+        body.dark-mode .icon-btn {
+            background: #252838;
+
+            border-color: #414459;
+
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .notification-panel {
+            background: #202230;
+
+            border-color: #414459;
+        }
+
+        body.dark-mode .notification-header {
+            border-color: #383b4d;
+        }
+
+        body.dark-mode .notification-header h3,
+        body.dark-mode .notification-content strong {
+            color: #f5f3ff;
+        }
+
+        body.dark-mode .notification-content p {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .notification-content small {
+            color: #77738a;
+        }
+
+        body.dark-mode .notification-item:hover {
+            background: #292c3d;
+        }
+
+        body.dark-mode .notification-clear {
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .notification-clear:hover {
+            background: #302e50;
+        }
+
+        body.dark-mode .notification-close {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .notification-close:hover {
+            background: #2c2f40;
+            color: #f5f3ff;
+        }
+
+        body.dark-mode .notification-delete {
+            color: #77738a;
+        }
+
+        body.dark-mode .notification-delete:hover {
+            background: #402c36;
+            color: #ff879e;
+        }
+
+        body.dark-mode .notification-empty {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .notification-empty strong {
+            color: #f5f3ff;
+        }
+
+        body.dark-mode .notification-empty p {
+            color: #77738a;
+        }
+
+        body.dark-mode .notification-empty-icon {
+            background: #302e50;
+        }
+
+        body.dark-mode .notification-footer {
+            background: #252838;
+
+            border-color: #383b4d;
+        }
+
+        body.dark-mode .section-icon,
+        body.dark-mode .pronounce-btn,
+        body.dark-mode .welcome-pronounce-btn,
+        body.dark-mode .certificate-dashboard-btn {
+            background: #302e50;
+
+            color: #aaa3ff;
+        }
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .header {
+                padding: 13px 4%;
+            }
+
+            .header-left .logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            .header-left .title h1 {
+                font-size: 17px;
+            }
+
+            .header-left .title span {
+                display: none;
+            }
+
+            .dashboard-content {
+                width: min(100% - 28px, 700px);
+
+                padding-top: 22px;
+            }
+
+            .welcome-section {
+                padding: 28px;
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .welcome-decoration {
+                display: none;
+            }
+
+            .ready-card {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .start-btn {
+                width: 100%;
+
+                justify-content: center;
+            }
+
+            .certificate-dashboard-card {
+                align-items: flex-start;
+
+                flex-wrap: wrap;
+            }
+
+            .certificate-dashboard-btn {
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 500px) {
+
+            .header-right {
+                gap: 6px;
+            }
+
+            .icon-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .notification-panel {
+                position: fixed;
+
+                top: 70px;
+
+                left: 14px;
+                right: 14px;
+
+                width: auto;
+            }
+
+            .notification-header {
+                padding: 14px;
+            }
+
+            .notification-header h3 {
+                font-size: 14px;
+            }
+
+            .welcome-section {
+                padding: 25px 22px;
+
+                border-radius: 20px;
+            }
+
+            .welcome-japanese {
+                font-size: 23px;
+            }
+
+            .daily-japanese {
+                font-size: 16px;
+            }
+
+            .word-card,
+            .quote-card {
+                padding: 22px;
+            }
+
+            .word-japanese {
+                font-size: 29px;
+            }
+
+            .quote-english {
+                font-size: 17px;
+            }
+
+            .ready-card {
+                padding: 23px;
+            }
+
+            .certificate-dashboard-card {
+                padding: 22px;
+            }
+
+            .dashboard-content {
+                width: calc(100% - 24px);
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="dashboard-page">
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <header class="header">
+
+        <div class="header-left">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                class="logo"
+                alt="Japanese Learning Portal"
+            >
+
+            <div class="title">
+
+                <h1>
+                    Japanese Learning Portal
+                </h1>
+
+                <span>
+                    Learn Japanese Anytime, Anywhere 🇯🇵
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-right">
+
+            <!-- Notifications -->
+
+            <div class="notification-wrapper">
+
+                <button
+                    type="button"
+                    class="icon-btn"
+                    id="notificationBtn"
+                    title="Notifications"
+                    aria-label="Notifications"
+                >
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    {% if notifications | selectattr("is_read", "equalto", 0) | list %}
+                        <span
+                            class="notification-dot"
+                            id="notificationDot"
+                        ></span>
+                    {% endif %}
+
+                </button>
+
+
+                <div
+                    class="notification-panel"
+                    id="notificationPanel"
+                >
+
+                    <div class="notification-header">
+
+                        <h3>
+                            🔔 Notifications
+                        </h3>
+
+                        <div class="notification-header-actions">
+
+                            {% if notifications %}
+
+                                <button
+                                    type="button"
+                                    id="clearNotifications"
+                                    class="notification-clear"
+                                >
+                                    Clear all
+                                </button>
+
+                            {% endif %}
+
+                            <button
+                                type="button"
+                                id="closeNotification"
+                                class="notification-close"
+                                aria-label="Close notifications"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DATABASE NOTIFICATIONS -->
+
+                    <div
+                        class="notification-list"
+                        id="notificationList"
+                    >
+
+                        {% if notifications %}
+
+                            {% for notification in notifications %}
+
+                                <div
+                                    class="notification-item"
+                                    data-notification-type="{{ notification['notification_type'] }}"
+                                    data-notification-id="{{ notification['id'] }}"
+                                >
+
+                                    <div class="notification-icon">
+
+                                        {% if notification["notification_type"] == "lesson" %}
+                                            📚
+
+                                        {% elif notification["notification_type"] == "certificate" %}
+                                            🎓
+
+                                        {% elif notification["notification_type"] == "milestone" %}
+                                            🎯
+
+                                        {% else %}
+                                            🔔
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="notification-content">
+
+                                        <strong>
+                                            {{ notification["title"] }}
+                                        </strong>
+
+                                        <p>
+                                            {{ notification["message"] }}
+                                        </p>
+
+                                        <small>
+                                            {{ notification["created_at"] }}
+                                        </small>
+
+                                    </div>
+
+
+                                    <button
+                                        type="button"
+                                        class="notification-delete"
+                                        data-notification-id="{{ notification['id'] }}"
+                                        title="Delete notification"
+                                        aria-label="Delete notification"
+                                    >
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+
+                                </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="notification-empty">
+
+                                <div class="notification-empty-icon">
+                                    🔔
+                                </div>
+
+                                <strong>
+                                    No notifications
+                                </strong>
+
+                                <p>
+                                    You're all caught up!
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="notification-footer">
+
+                        <a href="/learning_hub">
+                            Start Learning →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Settings -->
+
+            <a
+                href="/settings"
+                class="icon-btn"
+                title="Settings"
+                aria-label="Settings"
+            >
+
+                <i class="fa-solid fa-gear"></i>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         DASHBOARD CONTENT
+    ===================================================== -->
+
+    <main class="dashboard-content">
+
+        <!-- WELCOME -->
+
+        <section class="welcome-section">
+
+            <div class="welcome-content">
+
+                <h2 class="welcome-english">
+
+                    {{ greeting_english.rstrip('!') }}, {{ username }}!
+
+                </h2>
+
+
+                <h3 class="welcome-japanese">
+
+                    <span class="welcome-japanese-text">
+
+                        {{ greeting_japanese.rstrip('！') }}、
+                        {{ username }}{{ username_japanese }}さん！
+
+                    </span>
+
+
+                    <button
+                        type="button"
+                        class="welcome-pronounce-btn"
+                        id="welcomePronounceBtn"
+                        title="Pronounce Japanese greeting"
+                        aria-label="Pronounce Japanese greeting"
+                        data-pronounce='{{ (
+                        greeting_japanese.rstrip("！")
+                        ~ "、"
+                        ~ (
+                        username_japanese
+                        if username_japanese
+                        else username
+                        )
+                        ~ "さん！"
+                    ) | tojson }}'
+                    >
+                        🔊
+                    </button>
+
+                </h3>
+
+
+                <p class="daily-japanese">
+
+                    今日も頑張りましょう！
+
+                    <button
+                        type="button"
+                        class="pronounce-btn"
+                        data-pronounce="今日も頑張りましょう！"
+                        title="Pronounce"
+                        aria-label="Pronounce Japanese sentence"
+                    >
+                        🔊
+                    </button>
+
+                </p>
+
+
+                <span>
+                    Let's continue learning Japanese today.
+                </span>
+
+            </div>
+
+
+            <div class="welcome-decoration">
+                🌸
+            </div>
+
+        </section>
+
+
+        <!-- WORD OF THE DAY -->
+
+        <section class="dashboard-section">
+
+            <div class="section-title">
+
+                <span class="section-icon">
+                    📖
+                </span>
+
+                <h2>
+                    Word of the Day
+                </h2>
+
+            </div>
+
+
+            <div class="word-card">
+
+                <div class="word-japanese">
+
+                    {{ word.japanese }}
+
+                    <button
+                        type="button"
+                        class="pronounce-btn"
+                        data-pronounce='{{ word.japanese | tojson }}'
+                        title="Pronounce"
+                        aria-label="Pronounce Japanese word"
+                    >
+                        🔊
+                    </button>
+
+                </div>
+
+
+                <div class="word-romaji">
+                    {{ word.romaji }}
+                </div>
+
+
+                <div class="word-meaning">
+                    {{ word.meaning }}
+                </div>
+
+
+                <div class="word-example">
+
+                    🇯🇵 {{ word.example }}
+
+                    <button
+                        type="button"
+                        class="pronounce-btn"
+                        data-pronounce='{{ word.example | tojson }}'
+                        title="Pronounce"
+                        aria-label="Pronounce Japanese example"
+                    >
+                        🔊
+                    </button>
+
+
+                    <span>
+                        {{ word.example_meaning }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUOTE -->
+
+        <section class="dashboard-section">
+
+            <div class="section-title">
+
+                <span class="section-icon">
+                    🎌
+                </span>
+
+                <h2>
+                    Quote of the Day
+                </h2>
+
+            </div>
+
+
+            <div class="quote-card">
+
+                <div class="quote-mark">
+                    “
+                </div>
+
+
+                <p class="quote-english">
+                    {{ quote.text }}
+                </p>
+
+
+                <p class="quote-japanese">
+
+                    {{ quote.japanese }}
+
+                    <button
+                        type="button"
+                        class="pronounce-btn"
+                        data-pronounce='{{ quote.japanese | tojson }}'
+                        title="Pronounce"
+                        aria-label="Pronounce Japanese quote"
+                    >
+                        🔊
+                    </button>
+
+                </p>
+
+
+                <span>
+                    🌸 — {{ quote.author }}
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- READY TO LEARN -->
+
+        <section class="ready-section">
+
+            <div class="ready-card">
+
+                <div class="ready-icon">
+                    🚀
+                </div>
+
+
+                <div class="ready-content">
+
+                    <h2>
+                        Ready to Learn?
+                    </h2>
+
+                    <p>
+                        Explore lessons, notes, quizzes and more.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="/learning_hub"
+                    class="start-btn"
+                >
+
+                    Start Learning
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- CERTIFICATE -->
+
+        <section class="dashboard-section certificate-dashboard-card">
+
+            <div class="certificate-dashboard-icon">
+                🏆
+            </div>
+
+            <div class="certificate-dashboard-content">
+
+                <h2>
+                    Certificates
+                </h2>
+
+                <p>
+                    View your Japanese learning certificates
+                    and track your achievements.
+                </p>
+
+                <a
+                    href="{{ url_for('certificates') }}"
+                    class="certificate-dashboard-btn"
+                >
+                    View Certificates →
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="dashboard-footer">
+
+            <p>
+
+                🌸 Keep learning. Keep growing.
+
+                <span>
+
+                    頑張って！
+
+                    <button
+                        type="button"
+                        class="pronounce-btn"
+                        data-pronounce="頑張って"
+                        title="Pronounce"
+                        aria-label="Pronounce Japanese"
+                    >
+                        🔊
+                    </button>
+
+                </span>
+
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     NOTIFICATIONS + PRONUNCIATION
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const notificationBtn =
+        document.getElementById("notificationBtn");
+
+    const notificationPanel =
+        document.getElementById("notificationPanel");
+
+    const closeNotification =
+        document.getElementById("closeNotification");
+
+    const notificationList =
+        document.getElementById("notificationList");
+
+    const clearNotifications =
+        document.getElementById("clearNotifications");
+
+
+    /* =====================================================
+       OPEN / CLOSE NOTIFICATIONS
+    ===================================================== */
+
+    if (notificationBtn && notificationPanel) {
+
+        notificationBtn.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            notificationPanel.classList.toggle("show");
+
+            if (notificationPanel.classList.contains("show")) {
+
+                const dot =
+                    notificationBtn.querySelector(".notification-dot");
+
+                if (dot) {
+                    dot.remove();
+                }
+
+                fetch("/mark_notifications_read", {
+                    method: "POST"
+                }).catch(function () {
+                    /* Ignore notification read errors */
+                });
+
+            }
+
+        });
+
+    }
+
+
+    /* =====================================================
+       CLOSE NOTIFICATION PANEL
+    ===================================================== */
+
+    if (closeNotification && notificationPanel) {
+
+        closeNotification.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            notificationPanel.classList.remove("show");
+
+        });
+
+    }
+
+
+    /* =====================================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ===================================================== */
+
+    document.addEventListener("click", function (event) {
+
+        if (!notificationPanel || !notificationBtn) {
+            return;
+        }
+
+        if (
+            !notificationPanel.contains(event.target) &&
+            !notificationBtn.contains(event.target)
+        ) {
+
+            notificationPanel.classList.remove("show");
+
+        }
+
+    });
+
+
+    /* =====================================================
+       CLICKABLE NOTIFICATIONS
+    ===================================================== */
+
+    document
+        .querySelectorAll(".notification-item[data-notification-type]")
+        .forEach(function (item) {
+
+            item.addEventListener("click", function (event) {
+
+                if (
+                    event.target.closest(".notification-delete")
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const type =
+                    item.getAttribute("data-notification-type");
+
+                if (type === "certificate") {
+
+                    window.location.href =
+                        "{{ url_for('certificates') }}";
+
+                } else {
+
+                    window.location.href =
+                        "/learning_hub";
+
+                }
+
+            });
+
+        });
+
+
+    /* =====================================================
+       DELETE INDIVIDUAL NOTIFICATION
+    ===================================================== */
+
+    document
+        .querySelectorAll(".notification-delete")
+        .forEach(function (button) {
+
+            button.addEventListener("click", function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const notificationId =
+                    button.getAttribute("data-notification-id");
+
+                if (!notificationId) {
+                    return;
+                }
+
+                const item =
+                    button.closest(".notification-item");
+
+                fetch(
+                    "/delete_notification/" + notificationId,
+                    {
+                        method: "POST"
+                    }
+                )
+                .then(function (response) {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Failed to delete notification"
+                        );
+                    }
+
+                    if (item) {
+
+                        item.classList.add("removing");
+
+                        setTimeout(function () {
+
+                            item.remove();
+
+                            updateNotificationPanelState();
+
+                        }, 200);
+
+                    }
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Could not delete the notification. Please try again."
+                    );
+
+                });
+
+            });
+
+        });
+
+
+    /* =====================================================
+       CLEAR ALL NOTIFICATIONS
+    ===================================================== */
+
+    if (clearNotifications) {
+
+        clearNotifications.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const confirmed =
+                confirm(
+                    "Delete all notifications?"
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            fetch(
+                "/clear_notifications",
+                {
+                    method: "POST"
+                }
+            )
+            .then(function (response) {
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Failed to clear notifications"
+                    );
+                }
+
+                notificationList.innerHTML = `
+                    <div class="notification-empty">
+
+                        <div class="notification-empty-icon">
+                            🔔
+                        </div>
+
+                        <strong>
+                            No notifications
+                        </strong>
+
+                        <p>
+                            You're all caught up!
+                        </p>
+
+                    </div>
+                `;
+
+                clearNotifications.remove();
+
+                const dot =
+                    notificationBtn?.querySelector(".notification-dot");
+
+                if (dot) {
+                    dot.remove();
+                }
+
+            })
+            .catch(function () {
+
+                alert(
+                    "Could not clear notifications. Please try again."
+                );
+
+            });
+
+        });
+
+    }
+
+
+    /* =====================================================
+       UPDATE NOTIFICATION STATE
+    ===================================================== */
+
+    function updateNotificationPanelState() {
+
+        if (!notificationList) {
+            return;
+        }
+
+        const remainingItems =
+            notificationList.querySelectorAll(
+                ".notification-item[data-notification-id]"
+            );
+
+        if (remainingItems.length === 0) {
+
+            notificationList.innerHTML = `
+                <div class="notification-empty">
+
+                    <div class="notification-empty-icon">
+                        🔔
+                    </div>
+
+                    <strong>
+                        No notifications
+                    </strong>
+
+                    <p>
+                        You're all caught up!
+                    </p>
+
+                </div>
+            `;
+
+            if (clearNotifications) {
+                clearNotifications.remove();
+            }
+
+        }
+
+        const dot =
+            notificationBtn?.querySelector(".notification-dot");
+
+        if (dot) {
+            dot.remove();
+        }
+
+    }
+
+
+    /* =====================================================
+       PRONUNCIATION
+    ===================================================== */
+
+    document
+        .querySelectorAll("[data-pronounce]")
+        .forEach(function (button) {
+
+            button.addEventListener("click", function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                let text =
+                    button.dataset.pronounce || "";
+
+                try {
+
+                    text =
+                        JSON.parse(text);
+
+                } catch (error) {
+
+                    /* Static Japanese text */
+
+                }
+
+                pronounceJapanese(text);
+
+            });
+
+        });
+
+});
+
+
+/* =====================================================
+   JAPANESE PRONUNCIATION
+===================================================== */
+
+function pronounceJapanese(text) {
+
+    const enabled =
+        localStorage.getItem("pronunciation");
+
+
+    if (enabled === "false") {
+
+        if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+        }
+
+        return;
+    }
+
+
+    if (!("speechSynthesis" in window)) {
+
+        alert(
+            "Your browser does not support Japanese pronunciation."
+        );
+
+        return;
+    }
+
+
+    if (!text || !String(text).trim()) {
+        return;
+    }
+
+
+    window.speechSynthesis.cancel();
+
+
+    const speech =
+        new SpeechSynthesisUtterance(
+            String(text)
+        );
+
+
+    speech.lang = "ja-JP";
+
+    speech.rate = 0.85;
+
+    speech.pitch = 1;
+
+
+    window.speechSynthesis.speak(speech);
+
+}
+
+</script>
+
+
+<!-- Dark Mode -->
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}">
+</script>
+
+
+<!-- Pronunciation Settings -->
+
+<script
+    src="{{ url_for('static', filename='js/pronunciation.js') }}">
+</script>
+
+
+<script>
+
+document
+    .querySelectorAll(".certificate-progress-fill")
+    .forEach(function (bar) {
+
+        const progress =
+            bar.getAttribute("data-progress");
+
+        bar.style.width =
+            progress + "%";
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

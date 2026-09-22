@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Japanese Translator</title>
+
+
+    <!-- =====================================================
+         MAIN THEME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         ORIGINAL BACKGROUND
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background: transparent !important;
+
+            color: #302b43;
+
+            font-family:
+                Arial,
+                "Helvetica Neue",
+                Helvetica,
+                sans-serif;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ====================================================== */
+
+        .translator-page {
+            width: 100%;
+            min-height: 100vh;
+
+            padding: 28px 0 42px;
+
+            background: transparent;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .translator-container {
+            width: min(980px, calc(100% - 28px));
+
+            margin: 0 auto;
+
+            padding: 0;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .translator-card {
+            width: 100%;
+
+            position: relative;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.95),
+                    rgba(249, 247, 255, 0.92)
+                );
+
+            border:
+                1px solid rgba(255, 255, 255, 0.95);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 16px 38px rgba(65, 50, 110, 0.13);
+
+            backdrop-filter: blur(15px);
+
+            -webkit-backdrop-filter: blur(15px);
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .translator-header {
+            width: 100%;
+
+            margin: 0;
+
+            padding: 22px 20px 16px;
+
+            text-align: center;
+        }
+
+
+        .translator-icon {
+            width: 46px;
+            height: 46px;
+
+            margin: 0 auto 8px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #f1edff,
+                    #e8e3ff
+                );
+
+            color: #6258ce;
+
+            border-radius: 12px;
+
+            font-size: 20px;
+        }
+
+
+        .translator-header h1 {
+            margin: 0;
+
+            color: #302b43;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            line-height: 1.2;
+        }
+
+
+        .translator-header p {
+            margin: 6px 0 0;
+
+            color: #77718e;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           LANGUAGE BAR
+        ====================================================== */
+
+        .language-bar {
+            width: auto;
+
+            margin: 0 20px;
+
+            padding: 10px 13px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                48px
+                1fr;
+
+            align-items: center;
+
+            gap: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.72);
+
+            border:
+                1px solid #e6e0f0;
+
+            border-radius: 13px;
+        }
+
+
+        .language-box {
+            min-width: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+        }
+
+
+        .language-icon {
+            width: 32px;
+            height: 32px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: #f0edff;
+
+            color: #6258ce;
+
+            font-size: 13px;
+        }
+
+
+        .language-info {
+            min-width: 0;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 1px;
+        }
+
+
+        .language-label {
+            margin: 0;
+
+            color: #9992a8;
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+            line-height: 1.2;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+
+        .language-name {
+            margin: 0;
+
+            color: #403a54;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            line-height: 1.3;
+        }
+
+
+        .swap-button {
+            width: 35px;
+            height: 35px;
+
+            margin: auto;
+
+            padding: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid #ddd7e8;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            color: #6258ce;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .swap-button:hover {
+            background: #f3f0ff;
+
+            transform: rotate(180deg);
+        }
+
+
+        /* =====================================================
+           WORKSPACE
+        ====================================================== */
+
+        .translator-workspace {
+            width: 100%;
+
+            margin-top: 16px;
+
+            padding: 0;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            align-items: start;
+        }
+
+
+        .translation-panel {
+            width: 100%;
+
+            min-width: 0;
+
+            margin: 0;
+
+            padding: 15px 20px 18px;
+        }
+
+
+        .translation-panel:first-child {
+            border-right:
+                1px solid #e7e1ef;
+        }
+
+
+        /* =====================================================
+           PANEL HEADER
+        ====================================================== */
+
+        .panel-header {
+            width: 100%;
+
+            margin: 0 0 7px;
+
+            padding: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        .panel-title {
+            margin: 0;
+
+            color: #403a54;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.3;
+        }
+
+
+        .panel-code {
+            margin: 0;
+
+            padding: 3px 7px;
+
+            border-radius: 5px;
+
+            background: #f0edf6;
+
+            color: #858092;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           INPUT BOX
+        ====================================================== */
+
+        .translation-textarea {
+            width: 100% !important;
+
+            height: 145px !important;
+
+            min-height: 145px !important;
+
+            max-height: 145px !important;
+
+            margin: 0 !important;
+
+            padding: 13px !important;
+
+            display: block !important;
+
+            border:
+                1px solid #ddd8eb !important;
+
+            border-radius: 11px !important;
+
+            background:
+                rgba(255, 255, 255, 0.88) !important;
+
+            color: #302b43 !important;
+
+            font-family:
+                Arial,
+                "Helvetica Neue",
+                Helvetica,
+                sans-serif !important;
+
+            font-size: 14px !important;
+
+            line-height: 1.6 !important;
+
+            resize: none !important;
+
+            outline: none !important;
+
+            overflow: hidden !important;
+
+            box-shadow: none !important;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .translation-textarea:focus {
+            background: #ffffff !important;
+
+            border-color: #6258ce !important;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(98, 88, 206, 0.08) !important;
+        }
+
+
+        .translation-textarea::placeholder {
+            color: #9e98aa !important;
+        }
+
+
+        /* =====================================================
+           CHARACTER COUNT
+        ====================================================== */
+
+        .input-footer {
+            width: 100%;
+
+            margin: 4px 0 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            color: #9993a6;
+
+            font-size: 9px;
+
+            line-height: 1.2;
+        }
+
+
+        /* =====================================================
+           RESULT BOX
+        ====================================================== */
+
+        .result-box {
+            width: 100% !important;
+
+            height: 145px !important;
+
+            min-height: 145px !important;
+
+            max-height: 145px !important;
+
+            margin: 0 !important;
+
+            padding: 13px !important;
+
+            display: block !important;
+
+            position: relative !important;
+
+            border:
+                1px solid #ddd8eb !important;
+
+            border-radius: 11px !important;
+
+            background:
+                rgba(255, 255, 255, 0.88) !important;
+
+            color: #302b43 !important;
+
+            text-align: left !important;
+
+            overflow: hidden !important;
+
+            box-shadow: none !important;
+        }
+
+
+        /* =====================================================
+           TRANSLATION TEXT
+        ====================================================== */
+
+        .result-content {
+    position: absolute !important;
+
+    top: 13px !important;
+    left: 13px !important;
+    right: 13px !important;
+
+    width: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    color: #302b43 !important;
+
+    text-align: left !important;
+
+    font-family:
+        Arial,
+        "Helvetica Neue",
+        Helvetica,
+        sans-serif !important;
+
+    font-size: 15px !important;
+    font-weight: 600 !important;
+
+    line-height: 1.6 !important;
+
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+
+    transform: none !important;
+}
+
+        /* =====================================================
+           EMPTY RESULT
+        ====================================================== */
+
+        .empty-result {
+            width: 100%;
+
+            height: 100%;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            text-align: center;
+
+            color: #aaa4b4;
+        }
+
+
+        .empty-result i {
+            margin: 0 0 7px;
+
+            font-size: 20px;
+        }
+
+
+        .empty-result p {
+            margin: 0;
+
+            padding: 0;
+
+            font-size: 11px;
+
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           OUTPUT ACTIONS
+        ====================================================== */
+
+        .output-actions {
+            width: 100%;
+
+            margin: 7px 0 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 6px;
+        }
+
+
+        .small-action {
+            width: auto !important;
+
+            height: 31px !important;
+
+            min-height: 31px !important;
+
+            margin: 0 !important;
+
+            padding: 0 10px !important;
+
+            display: inline-flex !important;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 5px;
+
+            border:
+                1px solid #ded9e8 !important;
+
+            border-radius: 8px !important;
+
+            background: #ffffff !important;
+
+            color: #5f596d !important;
+
+            font-size: 10px !important;
+
+            font-weight: 600 !important;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .small-action:hover {
+            background: #f4f1ff !important;
+
+            color: #6258ce !important;
+        }
+
+
+        /* =====================================================
+           ACTION BAR
+        ====================================================== */
+
+        .translator-actions {
+            width: 100%;
+
+            margin: 0;
+
+            padding:
+                13px 20px 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            border-top:
+                1px solid #e7e1ef;
+        }
+
+
+        .translate-button {
+            width: 165px !important;
+
+            height: 41px !important;
+
+            min-height: 41px !important;
+
+            margin: 0 !important;
+
+            padding: 0 18px !important;
+
+            display: inline-flex !important;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            border: none !important;
+
+            border-radius: 10px !important;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6258ce,
+                    #766de0
+                ) !important;
+
+            color: #ffffff !important;
+
+            font-size: 12px !important;
+
+            font-weight: 700 !important;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 16px
+                rgba(98, 88, 206, 0.20);
+        }
+
+
+        .translate-button:hover {
+            transform: translateY(-1px);
+        }
+
+
+        .secondary-button {
+            width: auto !important;
+
+            height: 41px !important;
+
+            min-height: 41px !important;
+
+            margin: 0 !important;
+
+            padding: 0 15px !important;
+
+            display: inline-flex !important;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            border:
+                1px solid #ddd8eb !important;
+
+            border-radius: 10px !important;
+
+            background: #ffffff !important;
+
+            color: #6258ce !important;
+
+            font-size: 11px !important;
+
+            font-weight: 700 !important;
+
+            cursor: pointer;
+        }
+
+
+        .secondary-button:hover {
+            background: #f4f1ff !important;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ====================================================== */
+
+        .back-wrapper {
+            width: 100%;
+
+            margin: 0;
+
+            padding:
+                0 20px 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .translator-card .back-btn {
+            width: auto !important;
+
+            min-width: 0 !important;
+
+            height: 34px !important;
+
+            min-height: 34px !important;
+
+            margin: 0 !important;
+
+            padding: 0 13px !important;
+
+            display: inline-flex !important;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            border:
+                1px solid #ded9e8 !important;
+
+            border-radius: 8px !important;
+
+            background:
+                rgba(255, 255, 255, 0.80) !important;
+
+            color: #6258ce !important;
+
+            text-decoration: none !important;
+
+            white-space: nowrap !important;
+
+            font-size: 10px !important;
+
+            font-weight: 700 !important;
+        }
+
+
+        .translator-card .back-btn:hover {
+            background: #f4f1ff !important;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        body.dark-mode .translator-page .translator-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29, 31, 45, 0.96),
+                    rgba(37, 36, 54, 0.94)
+                );
+
+            border-color:
+                rgba(255, 255, 255, 0.08);
+        }
+
+
+        body.dark-mode .translator-page .translator-header h1 {
+            color: #f4f1ff;
+        }
+
+
+        body.dark-mode .translator-page .translator-header p {
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .translator-page .translator-icon {
+            background: #302e50;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .translator-page .language-bar {
+            background:
+                rgba(29, 31, 45, 0.72);
+
+            border-color: #41445b;
+        }
+
+
+        body.dark-mode .translator-page .language-icon {
+            background: #302e50;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .translator-page .language-name {
+            color: #e7e3f0;
+        }
+
+
+        body.dark-mode .translator-page .swap-button {
+            background: #252838;
+
+            border-color: #41445b;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .translator-page .translation-panel:first-child {
+            border-color: #41445b;
+        }
+
+
+        body.dark-mode .translator-page .panel-title {
+            color: #e7e3f0;
+        }
+
+
+        body.dark-mode .translator-page .panel-code {
+            background: #303348;
+
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .translator-page .translation-textarea,
+        body.dark-mode .translator-page .result-box {
+            background: #252838 !important;
+
+            border-color: #41445b !important;
+
+            color: #f0edf7 !important;
+        }
+
+
+        body.dark-mode .translator-page .result-content {
+            color: #f0edf7 !important;
+        }
+
+
+        body.dark-mode .translator-page .empty-result {
+            color: #9691a3;
+        }
+
+
+        body.dark-mode .translator-page .small-action {
+            background: #252838 !important;
+
+            border-color: #41445b !important;
+
+            color: #d1ccdd !important;
+        }
+
+
+        body.dark-mode .translator-page .small-action:hover {
+            background: #303348 !important;
+
+            color: #aaa3ff !important;
+        }
+
+
+        body.dark-mode .translator-page .secondary-button {
+            background: #252838 !important;
+
+            border-color: #41445b !important;
+
+            color: #aaa3ff !important;
+        }
+
+
+        body.dark-mode .translator-page .back-btn {
+            background: #252838 !important;
+
+            border-color: #41445b !important;
+
+            color: #aaa3ff !important;
+        }
+
+
+        body.dark-mode .translator-page .translator-actions {
+            border-color: #41445b;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .translator-page {
+                padding-top: 16px;
+            }
+
+
+            .translator-page .translator-container {
+                width: calc(100% - 16px);
+            }
+
+
+            .translator-page .language-bar {
+                grid-template-columns: 1fr;
+
+                gap: 8px;
+            }
+
+
+            .translator-page .swap-button {
+                transform: rotate(90deg);
+            }
+
+
+            .translator-page .swap-button:hover {
+                transform: rotate(270deg);
+            }
+
+
+            .translator-page .translator-workspace {
+                grid-template-columns: 1fr;
+            }
+
+
+            .translator-page .translation-panel:first-child {
+                border-right: none;
+
+                border-bottom:
+                    1px solid #e7e1ef;
+            }
+
+
+            body.dark-mode
+            .translator-page
+            .translation-panel:first-child {
+                border-bottom-color: #41445b;
+            }
+
+
+            .translator-page .translation-panel {
+                padding:
+                    14px 15px 17px;
+            }
+
+
+            .translator-page .translation-textarea,
+            .translator-page .result-box {
+                height: 125px !important;
+
+                min-height: 125px !important;
+
+                max-height: 125px !important;
+            }
+
+
+            .translator-page .result-content {
+                top: 13px !important;
+                left: 13px !important;
+                right: 13px !important;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 420px) {
+
+            .translator-page .translator-header h1 {
+                font-size: 22px;
+            }
+
+
+            .translator-page .translator-header p {
+                font-size: 11px;
+            }
+
+
+            .translator-page .translation-panel {
+                padding: 13px;
+            }
+
+
+            .translator-page .translation-textarea,
+            .translator-page .result-box {
+                height: 120px !important;
+
+                min-height: 120px !important;
+
+                max-height: 120px !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="translator-page">
+
+
+        <main class="translator-container">
+
+
+            <section class="translator-card">
+
+
+                <!-- =================================================
+                     HEADER
+                ================================================== -->
+
+                <header class="translator-header">
+
+                    <div class="translator-icon">
+
+                        <i class="fa-solid fa-language"></i>
+
+                    </div>
+
+
+                    <h1>
+                        Japanese Translator
+                    </h1>
+
+
+                    <p>
+                        Translate naturally between English and Japanese.
+                    </p>
+
+                </header>
+
+
+                <!-- =================================================
+                     LANGUAGE BAR
+                ================================================== -->
+
+                <div class="language-bar">
+
+
+                    <div class="language-box">
+
+                        <div class="language-icon">
+
+                            <i class="fa-solid fa-globe"></i>
+
+                        </div>
+
+
+                        <div class="language-info">
+
+                            <span class="language-label">
+                                From
+                            </span>
+
+
+                            <span
+                                class="language-name"
+                                id="fromLanguage"
+                            >
+                                English
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="swap-button"
+                        id="swapButton"
+                        title="Swap languages"
+                        aria-label="Swap languages"
+                    >
+
+                        <i
+                            class="fa-solid fa-arrow-right-arrow-left"
+                        ></i>
+
+                    </button>
+
+
+                    <div class="language-box">
+
+                        <div class="language-icon">
+
+                            <i class="fa-solid fa-torii-gate"></i>
+
+                        </div>
+
+
+                        <div class="language-info">
+
+                            <span class="language-label">
+                                To
+                            </span>
+
+
+                            <span
+                                class="language-name"
+                                id="toLanguage"
+                            >
+                                Japanese
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TRANSLATOR FORM
+                ================================================== -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('translator') }}"
+                    class="translator-form"
+                >
+
+
+                    <input
+                        type="hidden"
+                        name="direction"
+                        id="directionInput"
+                        value="{{ direction }}"
+                    >
+
+
+                    <div class="translator-workspace">
+
+
+                        <!-- INPUT PANEL -->
+
+                        <div class="translation-panel">
+
+
+                            <div class="panel-header">
+
+                                <span class="panel-title">
+                                    Enter text
+                                </span>
+
+
+                                <span
+                                    class="panel-code"
+                                    id="inputCode"
+                                >
+                                    EN
+                                </span>
+
+                            </div>
+
+
+                            <textarea
+                                class="translation-textarea"
+                                name="text"
+                                id="text"
+                                maxlength="5000"
+                                placeholder="Type or paste your English text here..."
+                                required
+                            >{{ text }}</textarea>
+
+
+                            <div class="input-footer">
+
+                                <span id="characterCount">
+                                    0 / 5000
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- OUTPUT PANEL -->
+
+                        <div class="translation-panel">
+
+
+                            <div class="panel-header">
+
+                                <span class="panel-title">
+                                    Translation
+                                </span>
+
+
+                                <span
+                                    class="panel-code"
+                                    id="outputCode"
+                                >
+                                    JA
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="result-box"
+                                id="resultBox"
+                            >
+
+                                {% if result %}
+
+                                    <div
+                                        class="result-content"
+                                        id="resultContent"
+                                    >
+                                        {{ result }}
+                                    </div>
+
+                                {% else %}
+
+                                    <div class="empty-result">
+
+                                        <i
+                                            class="fa-regular fa-comment-dots"
+                                        ></i>
+
+
+                                        <p>
+                                            Your translation will appear here.
+                                        </p>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            {% if result %}
+
+                                <div class="output-actions">
+
+
+                                    <button
+                                        type="button"
+                                        class="small-action"
+                                        onclick="copyTranslation()"
+                                        title="Copy translation"
+                                    >
+
+                                        <i
+                                            class="fa-regular fa-copy"
+                                        ></i>
+
+                                        Copy
+
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="small-action"
+                                        onclick="speakTranslation()"
+                                        title="Listen to translation"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-volume-high"
+                                        ></i>
+
+                                        Listen
+
+                                    </button>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTION BUTTONS
+                    ================================================== -->
+
+                    <div class="translator-actions">
+
+
+                        <button
+                            type="submit"
+                            class="translate-button"
+                        >
+
+                            <i
+                                class="fa-solid fa-language"
+                            ></i>
+
+                            Translate
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="secondary-button"
+                            onclick="clearTranslator()"
+                        >
+
+                            <i
+                                class="fa-solid fa-rotate-left"
+                            ></i>
+
+                            Clear
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- =================================================
+                     BACK TO LEARNING HUB
+                ================================================== -->
+
+                <div class="back-wrapper">
+
+                    <a
+                        href="{{ url_for('learning_hub') }}"
+                        class="back-btn"
+                    >
+
+                        <i
+                            class="fa-solid fa-arrow-left"
+                        ></i>
+
+                        Back to Learning Hub
+
+                    </a>
+
+                </div>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        const textArea =
+            document.getElementById("text");
+
+        const characterCount =
+            document.getElementById("characterCount");
+
+        const directionInput =
+            document.getElementById("directionInput");
+
+        const fromLanguage =
+            document.getElementById("fromLanguage");
+
+        const toLanguage =
+            document.getElementById("toLanguage");
+
+        const inputCode =
+            document.getElementById("inputCode");
+
+        const outputCode =
+            document.getElementById("outputCode");
+
+        const swapButton =
+            document.getElementById("swapButton");
+
+
+        /* =====================================================
+           CHARACTER COUNT
+        ====================================================== */
+
+        function updateCharacterCount() {
+
+            if (
+                !textArea ||
+                !characterCount
+            ) {
+                return;
+            }
+
+
+            characterCount.textContent =
+                textArea.value.length +
+                " / 5000";
+        }
+
+
+        if (textArea) {
+
+            textArea.addEventListener(
+                "input",
+                updateCharacterCount
+            );
+
+
+            updateCharacterCount();
+        }
+
+
+        /* =====================================================
+           LANGUAGE DISPLAY
+        ====================================================== */
+
+        function updateLanguageDisplay() {
+
+            if (
+                !directionInput ||
+                !fromLanguage ||
+                !toLanguage ||
+                !inputCode ||
+                !outputCode ||
+                !textArea
+            ) {
+                return;
+            }
+
+
+            if (
+                directionInput.value ===
+                "en_to_ja"
+            ) {
+
+                fromLanguage.textContent =
+                    "English";
+
+
+                toLanguage.textContent =
+                    "Japanese";
+
+
+                inputCode.textContent =
+                    "EN";
+
+
+                outputCode.textContent =
+                    "JA";
+
+
+                textArea.placeholder =
+                    "Type or paste your English text here...";
+
+            } else {
+
+                fromLanguage.textContent =
+                    "Japanese";
+
+
+                toLanguage.textContent =
+                    "English";
+
+
+                inputCode.textContent =
+                    "JA";
+
+
+                outputCode.textContent =
+                    "EN";
+
+
+                textArea.placeholder =
+                    "Type or paste your Japanese text here...";
+            }
+        }
+
+
+        updateLanguageDisplay();
+
+
+        /* =====================================================
+           SWAP
+        ====================================================== */
+
+        if (swapButton) {
+
+            swapButton.addEventListener(
+                "click",
+                function () {
+
+                    if (
+                        directionInput.value ===
+                        "en_to_ja"
+                    ) {
+
+                        directionInput.value =
+                            "ja_to_en";
+
+                    } else {
+
+                        directionInput.value =
+                            "en_to_ja";
+                    }
+
+
+                    updateLanguageDisplay();
+                }
+            );
+        }
+
+
+        /* =====================================================
+           CLEAR
+        ====================================================== */
+
+        function clearTranslator() {
+
+            if (textArea) {
+
+                textArea.value = "";
+
+                updateCharacterCount();
+
+                textArea.focus();
+            }
+
+
+            const resultBox =
+                document.getElementById(
+                    "resultBox"
+                );
+
+
+            if (resultBox) {
+
+                resultBox.innerHTML = `
+
+                    <div class="empty-result">
+
+                        <i
+                            class="fa-regular fa-comment-dots"
+                        ></i>
+
+                        <p>
+                            Your translation will appear here.
+                        </p>
+
+                    </div>
+
+                `;
+            }
+        }
+
+
+        /* =====================================================
+           COPY
+        ====================================================== */
+
+        function copyTranslation() {
+
+            const result =
+                document.getElementById(
+                    "resultContent"
+                );
+
+
+            if (!result) {
+                return;
+            }
+
+
+            const text =
+                result.innerText.trim();
+
+
+            if (!text) {
+                return;
+            }
+
+
+            if (
+                navigator.clipboard &&
+                navigator.clipboard.writeText
+            ) {
+
+                navigator.clipboard
+                    .writeText(text)
+                    .then(function () {
+
+                        showCopied();
+
+                    })
+                    .catch(function () {
+
+                        fallbackCopy(text);
+
+                    });
+
+            } else {
+
+                fallbackCopy(text);
+            }
+        }
+
+
+        /* =====================================================
+           FALLBACK COPY
+        ====================================================== */
+
+        function fallbackCopy(text) {
+
+            const temp =
+                document.createElement(
+                    "textarea"
+                );
+
+
+            temp.value =
+                text;
+
+
+            document.body.appendChild(
+                temp
+            );
+
+
+            temp.select();
+
+
+            try {
+
+                document.execCommand(
+                    "copy"
+                );
+
+
+                showCopied();
+
+            } catch (error) {
+
+                alert(
+                    "Could not copy the translation."
+                );
+            }
+
+
+            document.body.removeChild(
+                temp
+            );
+        }
+
+
+        function showCopied() {
+
+            const button =
+                document.querySelector(
+                    ".translator-page .small-action"
+                );
+
+
+            if (!button) {
+                return;
+            }
+
+
+            const original =
+                button.innerHTML;
+
+
+            button.innerHTML =
+                '<i class="fa-solid fa-check"></i> Copied';
+
+
+            setTimeout(
+                function () {
+
+                    button.innerHTML =
+                        original;
+
+                },
+                1500
+            );
+        }
+
+
+        /* =====================================================
+           LISTEN
+        ====================================================== */
+
+        function speakTranslation() {
+
+            const result =
+                document.getElementById(
+                    "resultContent"
+                );
+
+
+            if (!result) {
+                return;
+            }
+
+
+            const text =
+                result.innerText.trim();
+
+
+            if (!text) {
+                return;
+            }
+
+
+            if (
+                !("speechSynthesis" in window)
+            ) {
+
+                alert(
+                    "Text-to-speech is not supported by your browser."
+                );
+
+                return;
+            }
+
+
+            window.speechSynthesis.cancel();
+
+
+            const utterance =
+                new SpeechSynthesisUtterance(
+                    text
+                );
+
+
+            utterance.lang =
+                directionInput.value ===
+                "en_to_ja"
+                    ? "ja-JP"
+                    : "en-US";
+
+
+            utterance.rate =
+                0.9;
+
+
+            utterance.pitch =
+                1;
+
+
+            window.speechSynthesis.speak(
+                utterance
+            );
+        }
+
+    </script>
+
+
+    <!-- EXISTING PROJECT SCRIPTS -->
+
+    <script
+        src="{{ url_for('static', filename='js/darkmode.js') }}"
+    ></script>
+
+
+    <script
+        src="{{ url_for('static', filename='js/pronunciation.js') }}"
+    ></script>
+
+</body>
+
+</html>

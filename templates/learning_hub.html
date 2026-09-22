@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Learning Hub</title>
+
+
+    <!-- MAIN CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- FIXED BACKGROUND -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- LEARNING HUB CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/learning_hub.css') }}"
+    >
+
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<main class="hub">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <div class="hub-header">
+
+
+        <a
+            href="/dashboard"
+            class="back-btn"
+            aria-label="Back to Dashboard"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+        </a>
+
+
+        <div class="hub-header-text">
+
+            <h1>
+                📚 Learning Hub
+            </h1>
+
+
+            <p>
+
+                Welcome {{ username }} 👋
+
+                <br>
+
+                Continue your Japanese learning journey.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         CARDS
+    ================================================== -->
+
+    <div class="hub-grid">
+
+
+        <!-- NOTES -->
+
+        <a
+            href="/notes"
+            class="hub-card"
+        >
+
+            <div class="hub-icon">
+
+                <i class="fa-solid fa-book-open"></i>
+
+            </div>
+
+
+            <h2>
+                Notes
+            </h2>
+
+
+            <span class="hub-line"></span>
+
+
+            <p>
+                Grammar, Vocabulary &amp; JLPT
+            </p>
+
+
+            <span class="hub-flower">
+                🌸
+            </span>
+
+        </a>
+
+
+        <!-- QUIZ -->
+
+        <a
+            href="/quiz"
+            class="hub-card"
+        >
+
+            <div class="hub-icon">
+
+                <i class="fa-solid fa-clipboard-question"></i>
+
+            </div>
+
+
+            <h2>
+                Quiz
+            </h2>
+
+
+            <span class="hub-line"></span>
+
+
+            <p>
+                Practice Japanese
+            </p>
+
+
+            <span class="hub-flower">
+                🌸
+            </span>
+
+        </a>
+
+
+        <!-- TRANSLATOR -->
+
+        <a
+            href="/translator"
+            class="hub-card"
+        >
+
+            <div class="hub-icon">
+
+                <i class="fa-solid fa-language"></i>
+
+            </div>
+
+
+            <h2>
+                Translator
+            </h2>
+
+
+            <span class="hub-line"></span>
+
+
+            <p>
+                Translate Japanese
+            </p>
+
+
+            <span class="hub-flower">
+                🌸
+            </span>
+
+        </a>
+
+
+        <!-- PROGRESS -->
+
+        <a
+            href="/progress"
+            class="hub-card"
+        >
+
+            <div class="hub-icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+
+            <h2>
+                Progress
+            </h2>
+
+
+            <span class="hub-line"></span>
+
+
+            <p>
+                Track your learning progress
+            </p>
+
+
+            <span class="hub-flower">
+                🌸
+            </span>
+
+        </a>
+
+
+        <!-- FLASHCARDS -->
+
+        <a
+            href="/flashcards"
+            class="hub-card"
+        >
+
+            <div class="hub-icon">
+
+                <i class="fa-solid fa-layer-group"></i>
+
+            </div>
+
+
+            <h2>
+                Flashcards
+            </h2>
+
+
+            <span class="hub-line"></span>
+
+
+            <p>
+                Review Japanese vocabulary
+            </p>
+
+
+            <span class="hub-flower">
+                🌸
+            </span>
+
+        </a>
+
+
+        <!-- JLPT -->
+
+        <a
+            href="/jlpt"
+            class="hub-card"
+        >
+
+            <div class="hub-icon">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+            </div>
+
+
+            <h2>
+                JLPT Practice
+            </h2>
+
+
+            <span class="hub-line"></span>
+
+
+            <p>
+                Practice JLPT-style questions
+            </p>
+
+
+            <span class="hub-flower">
+                🌸
+            </span>
+
+        </a>
+
+
+    </div>
+
+</main>
+
+
+<!-- DARK MODE -->
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}">
+</script>
+
+
+<!-- PRONUNCIATION -->
+
+<script
+    src="{{ url_for('static', filename='js/pronunciation.js') }}">
+</script>
+
+
+</body>
+
+</html>

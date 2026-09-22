@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Certificates</title>
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         JAPANESE PORTAL BACKGROUND
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body class="internal-page">
+
+
+<div class="certificates-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="certificates-header">
+
+        <h1>
+            🏆 My Certificates
+        </h1>
+
+        <p>
+            Track your Japanese learning achievements
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         CERTIFICATE CARDS
+    ====================================================== -->
+
+    <div class="certificates-grid">
+
+
+        {% for certificate in certificate_progress %}
+
+
+        <div class="certificate-card">
+
+
+            <!-- =================================================
+                 CATEGORY ICON
+            ================================================== -->
+
+            <div class="certificate-card-icon">
+
+
+                {% if certificate.category == "Hiragana" %}
+
+                    あ
+
+
+                {% elif certificate.category == "Katakana" %}
+
+                    カ
+
+
+                {% elif certificate.category == "Grammar" %}
+
+                    文
+
+
+                {% elif certificate.category == "Vocabulary" %}
+
+                    語
+
+
+                {% else %}
+
+                    🎓
+
+                {% endif %}
+
+
+            </div>
+
+
+            <!-- =================================================
+                 CATEGORY NAME
+            ================================================== -->
+
+            <h2>
+
+                {{ certificate.category }}
+
+            </h2>
+
+
+            <!-- =================================================
+                 DESCRIPTION
+            ================================================== -->
+
+            <p>
+
+                Japanese
+                {{ certificate.category }}
+                Certificate
+
+            </p>
+
+
+            <!-- =================================================
+                 COMPLETED
+            ================================================== -->
+
+            {% if certificate.eligible %}
+
+
+                <span class="certificate-status completed">
+
+                    ✓ Completed
+
+                </span>
+
+
+                <p>
+
+                    {{ certificate.completed }}
+                    /
+                    {{ certificate.total }}
+                    lessons completed
+
+                </p>
+
+
+                <a
+                    href="{{ url_for(
+                        'certificate',
+                        category=certificate.category
+                    ) }}"
+                    class="certificate-action"
+                >
+
+                    📜 View Certificate
+
+                </a>
+
+
+            <!-- =================================================
+                 PENDING
+            ================================================== -->
+
+            {% else %}
+
+
+                <span class="certificate-status pending">
+
+                    ⏳ Pending
+
+                </span>
+
+
+                <p>
+
+                    {{ certificate.completed }}
+                    /
+                    {{ certificate.total }}
+                    lessons completed
+
+                </p>
+
+
+                <div class="certificate-action disabled">
+
+                    🔒 Complete Lessons
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+    <!-- =====================================================
+         BACK TO DASHBOARD
+    ====================================================== -->
+
+    <div class="certificates-back">
+
+        <a href="{{ url_for('dashboard') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}">
+</script>
+
+
+<script
+    src="{{ url_for('static', filename='js/pronunciation.js') }}">
+</script>
+
+
+</body>
+
+</html>

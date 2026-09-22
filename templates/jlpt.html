@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>JLPT Practice</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: transparent !important;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #302b43;
+        }
+
+        .jlpt-page {
+            width: min(1050px, calc(100% - 30px));
+            margin: 0 auto;
+            padding: 35px 0 70px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .jlpt-header {
+            padding: 26px 28px;
+            margin-bottom: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.94),
+                    rgba(249,246,255,.87)
+                );
+
+            border:
+                1px solid rgba(255,255,255,.9);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 14px 36px rgba(65,50,110,.10);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .jlpt-header h1 {
+            margin: 0;
+            color: #302b43;
+            font-size: 30px;
+        }
+
+        .jlpt-header p {
+            margin: 8px 0 0;
+            color: #77718e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           LEVEL GRID
+        ====================================================== */
+
+        .jlpt-level-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .jlpt-level {
+            width: 100%;
+            min-height: 190px;
+            padding: 22px 16px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.93),
+                    rgba(249,246,255,.86)
+                );
+
+            border:
+                1px solid rgba(255,255,255,.9);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 10px 28px rgba(65,50,110,.09);
+
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease,
+                border-color .2s ease;
+        }
+
+        .jlpt-level:hover {
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(98,88,206,.28);
+
+            box-shadow:
+                0 15px 34px rgba(65,50,110,.13);
+        }
+
+        .jlpt-level:active {
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           LOCKED LEVEL
+        ====================================================== */
+
+        .jlpt-level.locked {
+            cursor: pointer;
+            opacity: .72;
+        }
+
+        .jlpt-level.locked:hover {
+            transform: translateY(-3px);
+            border-color: rgba(130,120,150,.25);
+        }
+
+        .jlpt-level.locked .jlpt-level-icon {
+            background: #eceaf2;
+            color: #8c8798;
+        }
+
+        .jlpt-level.locked h2 {
+            color: #696477;
+        }
+
+        .jlpt-lock {
+            margin-top: 9px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            color: #8b8597;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           LEVEL ICON
+        ====================================================== */
+
+        .jlpt-level-icon {
+            width: 56px;
+            height: 56px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 14px;
+
+            border-radius: 14px;
+
+            background: #f0edff;
+            color: #6258ce;
+
+            font-size: 21px;
+        }
+
+        .jlpt-level h2 {
+            margin: 0;
+            color: #302b43;
+            font-size: 21px;
+        }
+
+        .jlpt-level p {
+            margin: 7px 0 0;
+            color: #817a91;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        /* =====================================================
+           INFORMATION
+        ====================================================== */
+
+        .jlpt-info {
+            margin-top: 22px;
+            padding: 18px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f3f0ff,
+                    #faf8ff
+                );
+
+            border:
+                1px solid #e4def0;
+
+            border-left:
+                4px solid #6258ce;
+
+            border-radius: 14px;
+
+            color: #666078;
+
+            font-size: 13px;
+            line-height: 1.6;
+
+            min-height: 58px;
+
+            display: flex;
+            align-items: center;
+        }
+
+        /* =====================================================
+           BACK
+        ====================================================== */
+
+        .jlpt-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: 22px;
+
+            min-height: 43px;
+            padding: 0 16px;
+
+            background: #f2effb;
+
+            border:
+                1px solid #e1dcec;
+
+            border-radius: 10px;
+
+            color: #6258ce;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition:
+                background .2s ease,
+                color .2s ease,
+                transform .2s ease;
+        }
+
+        .jlpt-back:hover {
+            background: #e8e4f7;
+            color: #4e45b8;
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        body.dark-mode .jlpt-header,
+        body.dark-mode .jlpt-level {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,.95),
+                    rgba(37,36,54,.91)
+                );
+
+            border-color:
+                rgba(255,255,255,.08);
+        }
+
+        body.dark-mode .jlpt-header h1,
+        body.dark-mode .jlpt-level h2 {
+            color: #f5f2ff;
+        }
+
+        body.dark-mode .jlpt-header p,
+        body.dark-mode .jlpt-level p {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .jlpt-level-icon {
+            background: #302e50;
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .jlpt-level.locked {
+            opacity: .62;
+        }
+
+        body.dark-mode .jlpt-level.locked .jlpt-level-icon {
+            background: #252638;
+            color: #77738c;
+        }
+
+        body.dark-mode .jlpt-level.locked h2 {
+            color: #aaa6bb;
+        }
+
+        body.dark-mode .jlpt-lock {
+            color: #858094;
+        }
+
+        body.dark-mode .jlpt-info {
+            background:
+                linear-gradient(
+                    135deg,
+                    #302e50,
+                    #292c40
+                );
+
+            border-color: #41445b;
+            color: #c9c4d5;
+        }
+
+        body.dark-mode .jlpt-back {
+            background: #252838;
+            border-color: #41445b;
+            color: #aaa3ff;
+        }
+
+        body.dark-mode .jlpt-back:hover {
+            background: #303246;
+            color: #c0bbff;
+        }
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 900px) {
+
+            .jlpt-level-grid {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .jlpt-page {
+                width: calc(100% - 24px);
+                padding-top: 22px;
+            }
+
+            .jlpt-header {
+                padding: 22px 18px;
+                border-radius: 19px;
+            }
+
+            .jlpt-header h1 {
+                font-size: 25px;
+            }
+
+            .jlpt-header p {
+                font-size: 12px;
+            }
+
+            .jlpt-level-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                gap: 11px;
+            }
+
+            .jlpt-level {
+                min-height: 165px;
+                padding: 18px 12px;
+                border-radius: 16px;
+            }
+
+            .jlpt-level-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 11px;
+                font-size: 19px;
+            }
+
+            .jlpt-level h2 {
+                font-size: 18px;
+            }
+
+            .jlpt-level p {
+                font-size: 11px;
+            }
+
+            .jlpt-lock {
+                font-size: 10px;
+            }
+
+            .jlpt-info {
+                padding: 15px 16px;
+                font-size: 12px;
+            }
+
+            .jlpt-back {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<main class="jlpt-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <section class="jlpt-header">
+
+        <h1>
+            🎓 JLPT Practice
+        </h1>
+
+        <p>
+            Choose a JLPT level and prepare step by step,
+            {{ username }}.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         JLPT LEVELS
+    ====================================================== -->
+
+    <section class="jlpt-level-grid">
+
+        <!-- N5 -->
+
+        <button
+            type="button"
+            class="jlpt-level"
+            onclick="startJLPT('N5')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-seedling"></i>
+
+            </div>
+
+            <h2>N5</h2>
+
+            <p>Beginner</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock-open"></i>
+
+                Available
+
+            </div>
+
+        </button>
+
+
+        <!-- N4 -->
+
+        {% if demo_unlocked or highest_unlocked_level in ['N4', 'N3', 'N2', 'N1'] %}
+
+        <button
+            type="button"
+            class="jlpt-level"
+            onclick="startJLPT('N4')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-book"></i>
+
+            </div>
+
+            <h2>N4</h2>
+
+            <p>Basic</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock-open"></i>
+
+                Available
+
+            </div>
+
+        </button>
+
+        {% else %}
+
+        <button
+            type="button"
+            class="jlpt-level locked"
+            onclick="showLockedMessage('N4')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+            <h2>N4</h2>
+
+            <p>Basic</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Locked
+
+            </div>
+
+        </button>
+
+        {% endif %}
+
+
+        <!-- N3 -->
+
+        {% if demo_unlocked or highest_unlocked_level in ['N3', 'N2', 'N1'] %}
+
+        <button
+            type="button"
+            class="jlpt-level"
+            onclick="startJLPT('N3')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-language"></i>
+
+            </div>
+
+            <h2>N3</h2>
+
+            <p>Intermediate</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock-open"></i>
+
+                Available
+
+            </div>
+
+        </button>
+
+        {% else %}
+
+        <button
+            type="button"
+            class="jlpt-level locked"
+            onclick="showLockedMessage('N3')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+            <h2>N3</h2>
+
+            <p>Intermediate</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Locked
+
+            </div>
+
+        </button>
+
+        {% endif %}
+
+
+        <!-- N2 -->
+
+        {% if demo_unlocked or highest_unlocked_level in ['N2', 'N1'] %}
+
+        <button
+            type="button"
+            class="jlpt-level"
+            onclick="startJLPT('N2')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-pen-nib"></i>
+
+            </div>
+
+            <h2>N2</h2>
+
+            <p>Upper Intermediate</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock-open"></i>
+
+                Available
+
+            </div>
+
+        </button>
+
+        {% else %}
+
+        <button
+            type="button"
+            class="jlpt-level locked"
+            onclick="showLockedMessage('N2')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+            <h2>N2</h2>
+
+            <p>Upper Intermediate</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Locked
+
+            </div>
+
+        </button>
+
+        {% endif %}
+
+
+        <!-- N1 -->
+
+        {% if demo_unlocked or highest_unlocked_level == 'N1' %}
+
+        <button
+            type="button"
+            class="jlpt-level"
+            onclick="startJLPT('N1')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+            </div>
+
+            <h2>N1</h2>
+
+            <p>Advanced</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock-open"></i>
+
+                Available
+
+            </div>
+
+        </button>
+
+        {% else %}
+
+        <button
+            type="button"
+            class="jlpt-level locked"
+            onclick="showLockedMessage('N1')"
+        >
+
+            <div class="jlpt-level-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+            <h2>N1</h2>
+
+            <p>Advanced</p>
+
+            <div class="jlpt-lock">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Locked
+
+            </div>
+
+        </button>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         INFORMATION
+    ====================================================== -->
+
+    <div
+        class="jlpt-info"
+        id="jlptInfo"
+    >
+
+        Select a level above to begin your JLPT practice.
+
+    </div>
+
+
+    <!-- =====================================================
+         BACK
+    ====================================================== -->
+
+    <a
+        href="{{ url_for('learning_hub') }}"
+        class="jlpt-back"
+    >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Learning Hub
+
+    </a>
+
+
+</main>
+
+
+<!-- =========================================================
+     JLPT ROUTING
+========================================================== -->
+
+<script>
+
+function startJLPT(level) {
+
+    if (level === "N5") {
+        window.location.href = "/jlpt/n5";
+        return;
+    }
+
+    if (level === "N4") {
+        window.location.href = "/jlpt/n4";
+        return;
+    }
+
+    if (level === "N3") {
+        window.location.href = "/jlpt/n3";
+        return;
+    }
+
+    if (level === "N2") {
+        window.location.href = "/jlpt/n2";
+        return;
+    }
+
+    if (level === "N1") {
+        window.location.href = "/jlpt/n1";
+        return;
+    }
+
+}
+
+
+function showLockedMessage(level) {
+
+    const info =
+        document.getElementById("jlptInfo");
+
+    if (level === "N4") {
+
+        info.textContent =
+            "🔒 Complete N5 with at least 80% to unlock N4.";
+
+    }
+
+    else if (level === "N3") {
+
+        info.textContent =
+            "🔒 Complete N4 with at least 80% to unlock N3.";
+
+    }
+
+    else if (level === "N2") {
+
+        info.textContent =
+            "🔒 Complete N3 with at least 80% to unlock N2.";
+
+    }
+
+    else if (level === "N1") {
+
+        info.textContent =
+            "🔒 Complete N2 with at least 80% to unlock N1.";
+
+    }
+
+}
+
+</script>
+
+
+<!-- =========================================================
+     DARK MODE
+========================================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/darkmode.js') }}"
+></script>
+
+
+</body>
+
+</html>

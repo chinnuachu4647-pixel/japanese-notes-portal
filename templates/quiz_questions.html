@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Japanese Quiz</title>
+
+
+    <!-- =====================================================
+         MAIN THEME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FIXED BACKGROUND
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background: transparent !important;
+
+            color: #302b43;
+
+            font-family:
+                Arial,
+                "Helvetica Neue",
+                Helvetica,
+                sans-serif;
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .quiz-container {
+            width: min(820px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 36px 0 70px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ===================================================== */
+
+        .quiz-card {
+            position: relative;
+
+            padding: 34px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.94),
+                    rgba(249,246,255,0.87)
+                );
+
+            border: 1px solid rgba(255,255,255,0.90);
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 16px 42px rgba(65,50,110,0.11);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            overflow: hidden;
+        }
+
+
+        .quiz-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            top: -115px;
+            right: -110px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(108,99,217,0.07);
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           TOP HEADER
+        ====================================================== */
+
+        .quiz-header {
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+
+            padding-bottom: 16px;
+
+            border-bottom: 1px solid #eeeaf5;
+
+            color: #817a91;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .quiz-progress,
+        .quiz-score {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+        }
+
+
+        /* =====================================================
+           TITLE
+        ====================================================== */
+
+        .quiz-card h1 {
+            position: relative;
+
+            z-index: 2;
+
+            margin: 0 0 22px;
+
+            color: #302b43;
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+            line-height: 1.25;
+        }
+
+
+        /* =====================================================
+           HELP TEXT
+        ====================================================== */
+
+        .help-text {
+            position: relative;
+
+            z-index: 2;
+
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff8e9,
+                    #fffaf1
+                );
+
+            border: 1px solid #f0dfbf;
+
+            border-radius: 12px;
+
+            color: #7b6546;
+
+            font-size: 13px;
+
+            line-height: 1.55;
+        }
+
+
+        /* =====================================================
+           QUESTION
+        ====================================================== */
+
+        .question {
+            position: relative;
+
+            z-index: 2;
+
+            margin-bottom: 8px;
+
+            padding: 19px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f2efff,
+                    #faf8ff
+                );
+
+            border: 1px solid #e5e0f0;
+
+            border-radius: 15px;
+
+            color: #302b43;
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            line-height: 1.6;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           ENGLISH EXPLANATION
+        ====================================================== */
+
+        .question-en {
+            position: relative;
+
+            z-index: 2;
+
+            margin-bottom: 22px;
+
+            color: #817a91;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           OPTIONS
+        ====================================================== */
+
+        .option {
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 11px 0;
+
+            padding: 16px 17px;
+
+            background:
+                rgba(255,255,255,0.76);
+
+            border: 1px solid #e6e1ef;
+
+            border-radius: 13px;
+
+            color: #504a5e;
+
+            font-size: 16px;
+
+            line-height: 1.5;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .option:hover {
+            background:
+                rgba(250,247,255,0.97);
+
+            border-color:
+                rgba(108,99,217,0.30);
+
+            transform: translateX(2px);
+
+            box-shadow:
+                0 7px 18px rgba(65,50,110,0.07);
+        }
+
+
+        .option input {
+            width: 18px;
+            height: 18px;
+
+            flex-shrink: 0;
+
+            margin: 0;
+
+            accent-color: #6258ce;
+        }
+
+
+        /* =====================================================
+           SELECTED OPTION
+           ====================================================== */
+
+        .option:has(input:checked) {
+            background:
+                linear-gradient(
+                    135deg,
+                    #f0edff,
+                    #faf8ff
+                );
+
+            border-color:
+                #6258ce;
+
+            box-shadow:
+                0 6px 18px rgba(98,88,206,0.10);
+        }
+
+
+        .option:has(input:checked) span {
+            color: #4f45b8;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           SUBMIT
+        ====================================================== */
+
+        .submit-btn {
+            width: 100%;
+
+            min-height: 48px;
+
+            margin-top: 22px;
+
+            padding: 0 20px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6258ce,
+                    #766de0
+                );
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px rgba(98,88,206,0.22);
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .submit-btn:hover {
+            background:
+                linear-gradient(
+                    135deg,
+                    #4e45b8,
+                    #6258ce
+                );
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 11px 24px rgba(98,88,206,0.30);
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        body.dark-mode .quiz-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,0.95),
+                    rgba(37,36,54,0.91)
+                );
+
+            border-color:
+                rgba(255,255,255,0.08);
+
+            box-shadow:
+                0 16px 42px rgba(0,0,0,0.25);
+        }
+
+
+        body.dark-mode .quiz-header {
+            border-color: #3f4256;
+
+            color: #9993aa;
+        }
+
+
+        body.dark-mode .quiz-card h1 {
+            color: #f5f2ff;
+        }
+
+
+        body.dark-mode .help-text {
+            background:
+                linear-gradient(
+                    135deg,
+                    #3a3325,
+                    #302b24
+                );
+
+            border-color: #5a4c34;
+
+            color: #d7c6a0;
+        }
+
+
+        body.dark-mode .question {
+            background:
+                linear-gradient(
+                    135deg,
+                    #302e50,
+                    #292c40
+                );
+
+            border-color: #41445b;
+
+            color: #f0edf8;
+        }
+
+
+        body.dark-mode .question-en {
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .option {
+            background:
+                rgba(29,31,45,0.74);
+
+            border-color: #41445b;
+
+            color: #d6d1df;
+        }
+
+
+        body.dark-mode .option:hover {
+            background:
+                rgba(35,37,53,0.90);
+
+            border-color:
+                rgba(145,136,242,0.40);
+        }
+
+
+        body.dark-mode .option:has(input:checked) {
+            background:
+                linear-gradient(
+                    135deg,
+                    #302e50,
+                    #292c40
+                );
+
+            border-color: #766de0;
+        }
+
+
+        body.dark-mode .option:has(input:checked) span {
+            color: #c0baff;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .quiz-container {
+                width: calc(100% - 24px);
+
+                padding-top: 22px;
+            }
+
+
+            .quiz-card {
+                padding: 24px 18px;
+
+                border-radius: 19px;
+            }
+
+
+            .quiz-header {
+                font-size: 12px;
+
+                margin-bottom: 20px;
+            }
+
+
+            .quiz-card h1 {
+                font-size: 25px;
+
+                margin-bottom: 18px;
+            }
+
+
+            .question {
+                padding: 17px;
+
+                font-size: 18px;
+            }
+
+
+            .question-en {
+                font-size: 13px;
+            }
+
+
+            .option {
+                padding: 14px;
+
+                font-size: 14px;
+            }
+
+
+            .submit-btn {
+                min-height: 46px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="quiz-container">
+
+
+        <section class="quiz-card">
+
+
+            <!-- =================================================
+                 PROGRESS HEADER
+            ================================================== -->
+
+            <div class="quiz-header">
+
+
+                <span class="quiz-progress">
+
+                    <i class="fa-solid fa-list-check"></i>
+
+                    Question {{ question_number }}
+                    / {{ total_questions }}
+
+                </span>
+
+
+                <span class="quiz-score">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    Score: {{ score }}
+
+                </span>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 TITLE
+            ================================================== -->
+
+            <h1>
+                📝 Japanese Quiz
+            </h1>
+
+
+            <!-- =================================================
+                 HELP
+            ================================================== -->
+
+            <div class="help-text">
+
+                💡 Don't worry! Japanese is shown as the learning
+                material. The English line explains what the
+                question is asking.
+
+            </div>
+
+
+            <!-- =================================================
+                 QUESTION
+            ================================================== -->
+
+            <div class="question">
+
+                {{ question.question }}
+
+            </div>
+
+
+            <!-- =================================================
+                 ENGLISH
+            ================================================== -->
+
+            {% if question.question_en %}
+
+                <div class="question-en">
+
+                    {{ question.question_en }}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 ANSWERS
+            ================================================== -->
+
+            <form method="POST">
+
+
+                {% for option in question.options %}
+
+                    <label class="option">
+
+                        <input
+                            type="radio"
+                            name="answer"
+                            value="{{ option }}"
+                            required
+                        >
+
+                        <span>
+                            {{ option }}
+                        </span>
+
+                    </label>
+
+                {% endfor %}
+
+
+                <!-- =================================================
+                     NEXT
+                ================================================== -->
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    Next Question
+
+                </button>
+
+
+            </form>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         DARK MODE
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='js/darkmode.js') }}">
+    </script>
+
+
+    <!-- =====================================================
+         PRONUNCIATION
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='js/pronunciation.js') }}">
+    </script>
+
+
+</body>
+
+</html>

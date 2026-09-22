@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Start Learning | Japanese Notes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="start-learning-page">
+
+    <!-- Background -->
+    <div class="choice-circle choice-circle-one"></div>
+    <div class="choice-circle choice-circle-two"></div>
+    <div class="choice-circle choice-circle-three"></div>
+
+    <main class="start-learning-wrapper">
+
+        <!-- Logo -->
+        <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            class="choice-logo"
+            alt="Japanese Notes"
+        >
+
+        <p class="choice-label">
+            🇯🇵 JAPANESE NOTES
+        </p>
+
+        <h1>
+            Start your
+            <span>Japanese</span>
+            journey.
+        </h1>
+
+        <p class="choice-description">
+            Choose how you would like to continue
+            learning Japanese.
+        </p>
+
+        <!-- Choices -->
+        <div class="choice-cards">
+
+            <!-- Create Account -->
+            <a href="{{ url_for('register') }}" class="choice-card">
+
+                <div class="choice-icon">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+
+                <h2>
+                    Create Account
+                </h2>
+
+                <p>
+                    Create your account and start
+                    your Japanese learning journey.
+                </p>
+
+                <span class="choice-button">
+                    Create Account
+                    <i class="fa-solid fa-arrow-right"></i>
+                </span>
+
+            </a>
+
+
+            <!-- Login -->
+            <a href="{{ url_for('login') }}" class="choice-card">
+
+                <div class="choice-icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+
+                <h2>
+                    Login
+                </h2>
+
+                <p>
+                    Already have an account?
+                    Continue learning from where you stopped.
+                </p>
+
+                <span class="choice-button">
+                    Login
+                    <i class="fa-solid fa-arrow-right"></i>
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- Back -->
+        <a href="{{ url_for('home') }}" class="choice-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Welcome
+        </a>
+
+    </main>
+
+</body>
+</html>

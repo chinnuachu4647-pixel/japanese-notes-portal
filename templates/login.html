@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Japanese Notes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+
+<body class="auth-page">
+
+
+    <!-- =========================================
+         BACKGROUND DECORATIONS
+    ========================================== -->
+
+    <div class="auth-circle auth-circle-one"></div>
+
+    <div class="auth-circle auth-circle-two"></div>
+
+    <div class="auth-circle auth-circle-three"></div>
+
+
+
+    <!-- =========================================
+         MAIN AUTH WRAPPER
+    ========================================== -->
+
+    <main class="auth-wrapper">
+
+
+        <!-- =====================================
+             LEFT SIDE
+        ====================================== -->
+
+        <section class="auth-intro">
+
+
+            <a href="{{ url_for('home') }}"
+               class="auth-brand">
+
+                <img
+                    src="{{ url_for('static', filename='images/logo.png') }}"
+                    alt="Japanese Notes Logo"
+                >
+
+                <span>
+                    Japanese Notes
+                </span>
+
+            </a>
+
+
+
+            <div class="auth-intro-content">
+
+
+                <div class="japanese-symbol">
+                    日本語
+                </div>
+
+
+                <p class="auth-small-title">
+                    🇯🇵 WELCOME BACK
+                </p>
+
+
+                <h1>
+
+                    Continue your
+
+                    <span>
+                        Japanese
+                    </span>
+
+                    journey.
+
+                </h1>
+
+
+                <p>
+
+                    Log in to continue your lessons,
+                    practice vocabulary and keep track
+                    of your progress.
+
+                </p>
+
+
+
+                <div class="auth-benefits">
+
+
+                    <div>
+
+                        <i class="fa-solid fa-book-open"></i>
+
+                        <span>
+                            Continue your lessons
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <span>
+                            Check your progress
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-star"></i>
+
+                        <span>
+                            Keep learning every day
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             LOGIN CARD
+        ====================================== -->
+
+        <section class="auth-card">
+
+
+            <!-- CARD HEADER -->
+
+            <div class="auth-card-header">
+
+
+                <div class="auth-icon">
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Welcome Back
+                    </h2>
+
+                    <p>
+                        Log in to your Japanese Notes account.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 LOGIN FORM
+            ================================== -->
+
+            <form
+                method="POST"
+                action="{{ url_for('login') }}"
+                class="auth-form"
+            >
+
+
+                <!-- =================================
+                     EMAIL
+                ================================== -->
+
+                <div class="form-group">
+
+
+                    <label for="email">
+
+                        Email Address
+
+                    </label>
+
+
+                    <div class="input-box">
+
+
+                        <i class="fa-regular fa-envelope"></i>
+
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     PASSWORD
+                ================================== -->
+
+                <div class="form-group">
+
+
+                    <div class="label-row">
+
+
+                        <label for="password">
+
+                            Password
+
+                        </label>
+
+
+                        <a href="{{ url_for('forgot') }}">
+
+                            Forgot password?
+
+                        </a>
+
+
+                    </div>
+
+
+
+                    <div class="input-box">
+
+
+                        <i class="fa-solid fa-lock"></i>
+
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('password', this)"
+                            aria-label="Show password"
+                        >
+
+                            <i class="fa-regular fa-eye"></i>
+
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         INVALID PASSWORD MESSAGE
+                    ================================== -->
+
+                    {% if login_error %}
+
+                    <div class="login-error">
+
+                        <i class="fa-solid fa-circle-exclamation"></i>
+
+                        <span>
+                            {{ login_error }}
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     LOGIN BUTTON
+                ================================== -->
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                >
+
+                    Log In
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- =================================
+                 CREATE ACCOUNT
+            ================================== -->
+
+            <div class="auth-divider">
+
+                <span>
+                    Don't have an account?
+                </span>
+
+            </div>
+
+
+
+            <a
+                href="{{ url_for('register') }}"
+                class="auth-secondary-btn"
+            >
+
+                Create Account
+
+            </a>
+
+
+
+            <!-- =================================
+                 BACK TO HOME
+            ================================== -->
+
+            <a
+                href="{{ url_for('home') }}"
+                class="auth-back"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Home
+
+            </a>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         PASSWORD SHOW / HIDE
+    ========================================== -->
+
+    <script>
+
+        function togglePassword(inputId, button) {
+
+            const input =
+                document.getElementById(inputId);
+
+            const icon =
+                button.querySelector("i");
+
+
+            if (input.type === "password") {
+
+                input.type = "text";
+
+                icon.classList.remove("fa-eye");
+
+                icon.classList.add("fa-eye-slash");
+
+            }
+
+            else {
+
+                input.type = "password";
+
+                icon.classList.remove("fa-eye-slash");
+
+                icon.classList.add("fa-eye");
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

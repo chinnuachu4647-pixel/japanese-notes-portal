@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz Result</title>
+
+
+    <!-- =====================================================
+         MAIN THEME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FIXED BACKGROUND
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background: transparent !important;
+
+            color: #302b43;
+
+            font-family:
+                Arial,
+                "Helvetica Neue",
+                Helvetica,
+                sans-serif;
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .result-container {
+            width: min(760px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 45px 0 70px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           RESULT CARD
+        ===================================================== */
+
+        .result-card {
+            position: relative;
+
+            padding: 38px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.94),
+                    rgba(249,246,255,0.87)
+                );
+
+            border: 1px solid rgba(255,255,255,0.90);
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 16px 45px rgba(65,50,110,0.12);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            overflow: hidden;
+        }
+
+
+        .result-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            top: -120px;
+            right: -105px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(108,99,217,0.07);
+
+            pointer-events: none;
+        }
+
+
+        .result-card::after {
+            content: "🌸";
+
+            position: absolute;
+
+            left: 22px;
+            bottom: 18px;
+
+            font-size: 24px;
+
+            opacity: 0.18;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           RESULT ICON
+        ===================================================== */
+
+        .result-icon {
+            position: relative;
+
+            z-index: 2;
+
+            width: 86px;
+            height: 86px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 18px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #f1edff,
+                    #e8e2ff
+                );
+
+            box-shadow:
+                0 10px 25px rgba(98,88,206,0.10);
+
+            font-size: 42px;
+        }
+
+
+        /* =====================================================
+           TITLE
+        ===================================================== */
+
+        .result-card h1 {
+            position: relative;
+
+            z-index: 2;
+
+            margin: 0;
+
+            color: #302b43;
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+            line-height: 1.25;
+        }
+
+
+        /* =====================================================
+           USERNAME
+        ===================================================== */
+
+        .username {
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 8px;
+
+            color: #77718e;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           SCORE BOX
+        ===================================================== */
+
+        .score-box {
+            position: relative;
+
+            z-index: 2;
+
+            margin: 26px 0 22px;
+
+            padding: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f2efff,
+                    #faf8ff
+                );
+
+            border: 1px solid #e6e1f1;
+
+            border-radius: 18px;
+        }
+
+
+        .score {
+            color: #6258ce;
+
+            font-size: 40px;
+
+            font-weight: 800;
+
+            line-height: 1.1;
+        }
+
+
+        .percentage {
+            margin-top: 8px;
+
+            color: #4d9b77;
+
+            font-size: 23px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .result-message {
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 560px;
+
+            margin: 0 auto 26px;
+
+            color: #5d576c;
+
+            font-size: 16px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .result-actions {
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .result-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 45px;
+
+            padding: 0 18px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .primary-result-btn {
+            background:
+                linear-gradient(
+                    135deg,
+                    #6258ce,
+                    #766de0
+                );
+
+            color: #ffffff;
+
+            box-shadow:
+                0 8px 20px rgba(98,88,206,0.22);
+        }
+
+
+        .primary-result-btn:hover {
+            background:
+                linear-gradient(
+                    135deg,
+                    #4e45b8,
+                    #6258ce
+                );
+
+            color: #ffffff;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 11px 24px rgba(98,88,206,0.30);
+        }
+
+
+        .secondary-result-btn {
+            background: #f2effb;
+
+            color: #6258ce;
+
+            border: 1px solid #e1dcec;
+        }
+
+
+        .secondary-result-btn:hover {
+            background: #e8e4f7;
+
+            color: #4e45b8;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           INFO
+        ===================================================== */
+
+        .result-info {
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 24px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #eeeaf5;
+
+            color: #8a8399;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        body.dark-mode .result-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,0.95),
+                    rgba(37,36,54,0.91)
+                );
+
+            border-color:
+                rgba(255,255,255,0.08);
+
+            box-shadow:
+                0 16px 45px rgba(0,0,0,0.28);
+        }
+
+
+        body.dark-mode .result-icon {
+            background:
+                linear-gradient(
+                    145deg,
+                    #302e50,
+                    #2a2c40
+                );
+        }
+
+
+        body.dark-mode .result-card h1 {
+            color: #f5f2ff;
+        }
+
+
+        body.dark-mode .username {
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .score-box {
+            background:
+                linear-gradient(
+                    135deg,
+                    #302e50,
+                    #292c40
+                );
+
+            border-color: #41445b;
+        }
+
+
+        body.dark-mode .score {
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .percentage {
+            color: #70c79a;
+        }
+
+
+        body.dark-mode .result-message {
+            color: #d0ccdd;
+        }
+
+
+        body.dark-mode .secondary-result-btn {
+            background: #252838;
+
+            border-color: #41445b;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .secondary-result-btn:hover {
+            background: #303348;
+
+            color: #c0baff;
+        }
+
+
+        body.dark-mode .result-info {
+            border-color: #3f4256;
+
+            color: #9993aa;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .result-container {
+                width: calc(100% - 24px);
+
+                padding-top: 24px;
+            }
+
+
+            .result-card {
+                padding: 26px 18px;
+
+                border-radius: 20px;
+            }
+
+
+            .result-icon {
+                width: 72px;
+                height: 72px;
+
+                border-radius: 19px;
+
+                font-size: 35px;
+            }
+
+
+            .result-card h1 {
+                font-size: 25px;
+            }
+
+
+            .score-box {
+                padding: 21px;
+            }
+
+
+            .score {
+                font-size: 34px;
+            }
+
+
+            .percentage {
+                font-size: 21px;
+            }
+
+
+            .result-message {
+                font-size: 14px;
+            }
+
+
+            .result-actions {
+                flex-direction: column;
+            }
+
+
+            .result-btn {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="result-container">
+
+        <section class="result-card">
+
+
+            <!-- =================================================
+                 RESULT ICON
+            ================================================== -->
+
+            {% if percentage >= 90 %}
+
+                <div class="result-icon">
+                    🏆
+                </div>
+
+            {% elif percentage >= 70 %}
+
+                <div class="result-icon">
+                    🎉
+                </div>
+
+            {% elif percentage >= 50 %}
+
+                <div class="result-icon">
+                    💪
+                </div>
+
+            {% else %}
+
+                <div class="result-icon">
+                    📚
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 TITLE
+            ================================================== -->
+
+            <h1>
+                Quiz Completed!
+            </h1>
+
+
+            <div class="username">
+
+                Great job, {{ username }}! 🇯🇵
+
+            </div>
+
+
+            <!-- =================================================
+                 SCORE
+            ================================================== -->
+
+            <div class="score-box">
+
+                <div class="score">
+                    {{ score }} / {{ total }}
+                </div>
+
+
+                <div class="percentage">
+                    {{ percentage }}%
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MESSAGE
+            ================================================== -->
+
+            <div class="result-message">
+
+                {% if percentage >= 90 %}
+
+                    🌟 Excellent! Your Japanese skills are amazing!
+
+                {% elif percentage >= 70 %}
+
+                    👍 Great job! You're making really good progress!
+
+                {% elif percentage >= 50 %}
+
+                    😊 Good effort! Keep practicing and you'll improve!
+
+                {% else %}
+
+                    💪 Don't give up! Review the lesson and try again!
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =================================================
+                 ACTIONS
+            ================================================== -->
+
+            <div class="result-actions">
+
+
+                <a
+                    href="/quiz"
+                    class="result-btn primary-result-btn"
+                >
+
+                    <i class="fa-solid fa-rotate-right"></i>
+
+                    Take Another Quiz
+
+                </a>
+
+
+                <a
+                    href="/learning_hub"
+                    class="result-btn secondary-result-btn"
+                >
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    Learning Hub
+
+                </a>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 FOOTER MESSAGE
+            ================================================== -->
+
+            <div class="result-info">
+
+                Keep studying a little every day.
+                <br>
+                日本語をがんばって！ 🇯🇵
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         DARK MODE
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='js/darkmode.js') }}">
+    </script>
+
+
+    <!-- =====================================================
+         PRONUNCIATION
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='js/pronunciation.js') }}">
+    </script>
+
+
+</body>
+
+</html>

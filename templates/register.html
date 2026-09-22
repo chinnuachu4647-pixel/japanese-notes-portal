@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Japanese Notes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="auth-page">
+
+    <!-- Background decorations -->
+    <div class="auth-circle auth-circle-one"></div>
+    <div class="auth-circle auth-circle-two"></div>
+    <div class="auth-circle auth-circle-three"></div>
+
+    <main class="auth-wrapper">
+
+        <!-- Left side -->
+        <section class="auth-intro">
+
+            <a href="{{ url_for('home') }}" class="auth-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}"
+                     alt="Japanese Notes Logo">
+
+                <span>Japanese Notes</span>
+            </a>
+
+            <div class="auth-intro-content">
+
+                <div class="japanese-symbol">
+                    学
+                </div>
+
+                <p class="auth-small-title">
+                    🇯🇵 JAPANESE LEARNING PORTAL
+                </p>
+
+                <h1>
+                    Start your
+                    <span>Japanese</span>
+                    journey.
+                </h1>
+
+                <p>
+                    Create your account and begin learning
+                    Hiragana, Katakana, vocabulary and grammar
+                    step by step.
+                </p>
+
+                <div class="auth-benefits">
+
+                    <div>
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Learn at your own pace</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Track your learning progress</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-language"></i>
+                        <span>Build your Japanese skills</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Registration card -->
+        <section class="auth-card">
+
+            <div class="auth-card-header">
+
+                <div class="auth-icon">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+
+                <div>
+                    <h2>Create Account</h2>
+                    <p>Join Japanese Notes and start learning.</p>
+                </div>
+
+            </div>
+
+
+            <form method="POST"
+                  action="{{ url_for('register') }}"
+                  class="auth-form">
+
+                <!-- Name -->
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-regular fa-user"></i>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Date of birth -->
+                <div class="form-group">
+
+                    <label for="dob">
+                        Date of Birth
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                        <input
+                            type="date"
+                            id="dob"
+                            name="dob"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('password', this)"
+                            aria-label="Show password">
+
+                            <i class="fa-regular fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Confirm password -->
+                <div class="form-group">
+
+                    <label for="confirm_password">
+                        Confirm Password
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('confirm_password', this)"
+                            aria-label="Show password">
+
+                            <i class="fa-regular fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="auth-submit">
+
+                    Create Account
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+
+            <div class="auth-divider">
+                <span>Already have an account?</span>
+            </div>
+
+
+            <a href="{{ url_for('login') }}" class="auth-secondary-btn">
+                Log In
+            </a>
+
+
+            <a href="{{ url_for('home') }}" class="auth-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Home
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        function togglePassword(inputId, button) {
+
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector("i");
+
+            if (input.type === "password") {
+
+                input.type = "text";
+
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+
+            } else {
+
+                input.type = "password";
+
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile</title>
+
+
+    <!-- MAIN THEME -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- FIXED BACKGROUND -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/app-background.css') }}"
+    >
+
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+
+            min-height: 100vh;
+
+            background: transparent !important;
+
+            font-family:
+                Arial,
+                "Helvetica Neue",
+                Helvetica,
+                sans-serif;
+
+            color: #302b43;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .edit-profile-container {
+            width: min(650px, calc(100% - 30px));
+
+            margin: 0 auto;
+
+            padding: 40px 0 70px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .edit-profile-card {
+            padding: 34px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.94),
+                    rgba(249,246,255,0.88)
+                );
+
+            border: 1px solid rgba(255,255,255,0.90);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 16px 42px rgba(65,50,110,0.11);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .edit-profile-header {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .edit-profile-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            background: #f0edff;
+
+            color: #6258ce;
+
+            border-radius: 14px;
+
+            font-size: 20px;
+        }
+
+
+        .edit-profile-header h1 {
+            margin: 0;
+
+            color: #302b43;
+
+            font-size: 27px;
+
+            font-weight: 700;
+        }
+
+
+        .edit-profile-header p {
+            margin: 4px 0 0;
+
+            color: #817a91;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .error-message {
+            margin-bottom: 18px;
+
+            padding: 12px 14px;
+
+            background: #fff0f2;
+
+            border: 1px solid #f2c9d0;
+
+            border-radius: 10px;
+
+            color: #c34f64;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #5f596f;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .form-group input {
+            width: 100%;
+
+            margin: 0;
+
+            padding: 13px 14px;
+
+            background: rgba(255,255,255,0.86);
+
+            border: 1px solid #ddd8eb;
+
+            border-radius: 11px;
+
+            color: #302b43;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .form-group input:focus {
+            background: #ffffff;
+
+            border-color: #6258ce;
+
+            box-shadow:
+                0 0 0 3px rgba(98,88,206,0.10);
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .edit-actions {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 25px;
+
+            padding-top: 21px;
+
+            border-top: 1px solid #eeeaf5;
+        }
+
+
+        .save-profile-btn,
+        .cancel-profile-btn {
+            min-height: 44px;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 0 18px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .save-profile-btn {
+            border: none;
+
+            background: #6258ce;
+
+            color: #ffffff;
+        }
+
+
+        .save-profile-btn:hover {
+            background: #4e45b8;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 9px 20px rgba(98,88,206,0.25);
+        }
+
+
+        .cancel-profile-btn {
+            background: #f2effb;
+
+            border: 1px solid #e1dcec;
+
+            color: #6258ce;
+        }
+
+
+        .cancel-profile-btn:hover {
+            background: #e8e4f7;
+
+            color: #4e45b8;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        body.dark-mode .edit-profile-card {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(29,31,45,0.95),
+                    rgba(37,36,54,0.91)
+                );
+
+            border-color:
+                rgba(255,255,255,0.08);
+        }
+
+
+        body.dark-mode .edit-profile-icon {
+            background: #302e50;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .edit-profile-header h1 {
+            color: #f5f2ff;
+        }
+
+
+        body.dark-mode .edit-profile-header p {
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .form-group label {
+            color: #aaa6bb;
+        }
+
+
+        body.dark-mode .form-group input {
+            background: #252838;
+
+            border-color: #41445b;
+
+            color: #f5f2ff;
+        }
+
+
+        body.dark-mode .form-group input:focus {
+            background: #292c40;
+
+            border-color: #766de0;
+        }
+
+
+        body.dark-mode .edit-actions {
+            border-color: #3f4256;
+        }
+
+
+        body.dark-mode .cancel-profile-btn {
+            background: #252838;
+
+            border-color: #41445b;
+
+            color: #aaa3ff;
+        }
+
+
+        body.dark-mode .cancel-profile-btn:hover {
+            background: #303348;
+
+            color: #c0baff;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .edit-profile-container {
+                width: calc(100% - 24px);
+
+                padding-top: 24px;
+            }
+
+
+            .edit-profile-card {
+                padding: 24px 18px;
+
+                border-radius: 19px;
+            }
+
+
+            .edit-profile-header h1 {
+                font-size: 24px;
+            }
+
+
+            .edit-actions {
+                flex-direction: column;
+            }
+
+
+            .save-profile-btn,
+            .cancel-profile-btn {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <main class="edit-profile-container">
+
+
+        <section class="edit-profile-card">
+
+
+            <!-- HEADER -->
+
+            <header class="edit-profile-header">
+
+                <div class="edit-profile-icon">
+
+                    <i class="fa-solid fa-user-pen"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        Edit Profile
+                    </h1>
+
+                    <p>
+                        Update your account information.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+            <!-- ERROR -->
+
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- FORM -->
+
+            <form
+                method="POST"
+                action="/edit_profile"
+            >
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{ user['name'] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ user['email'] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DATE OF BIRTH -->
+
+                <div class="form-group">
+
+                    <label for="dob">
+                        Date of Birth
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dob"
+                        name="dob"
+                        value="{{ user['dob'] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="edit-actions">
+
+                    <button
+                        type="submit"
+                        class="save-profile-btn"
+                    >
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Save Changes
+
+                    </button>
+
+
+                    <a
+                        href="/profile"
+                        class="cancel-profile-btn"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- DARK MODE -->
+
+    <script
+        src="{{ url_for('static', filename='js/darkmode.js') }}">
+    </script>
+
+
+</body>
+
+</html>
