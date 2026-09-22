@@ -13,6 +13,7 @@ __pycache__/
 *.db-wal
 *.db-shm
 database_backup_*.db
+database.db
 
 # Generated certificates
 certificates/*.pdf
@@ -26,4 +27,4 @@ certificates/*.pdf
 Thumbs.db
 
 # Logs
-*.logdatabase.db
+*.log
